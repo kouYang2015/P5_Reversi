@@ -66,8 +66,14 @@ public class ReversiBoard implements Serializable{
 	}
 	
 
+	public int findBlackCount() {
+		return 0;	//TODO: find in Hashmap all black
+	}
+	public int findWhiteCount() {
+		return 0;	//TODO: find in Hashmap all white
+	}
 	public Disks findWinner() {
-		return blackCount < whiteCount ? Disks.WHITE : Disks.BLACK;
+		return findBlackCount() < findWhiteCount() ? Disks.WHITE : Disks.BLACK;
 	}
 	
 	/**
