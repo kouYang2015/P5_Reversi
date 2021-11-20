@@ -77,8 +77,35 @@ public class ReversiBoard implements Serializable{
 		return legalMoves;
 	}
 	
-	public void capture(){
-		
+	private boolean isValidMove(int loc) {
+		return !isOver() && findLegalMove().contains(loc);
+	}
+	
+	/**
+	 * Returns true iff able to place the mark of the current player into the
+	 * specified grid location.
+	 * 
+	 * @param loc the specified board location
+	 * @return {@code true} iff mark was successfully placed
+	 */
+	public boolean placeDisk(int loc) {
+		return placeDisk(getCurrentPlayer(), loc);
+	}
+	
+	private boolean placeDisk(Disks currentPlayer, int loc) {
+		boolean placed = false;
+		if (currentPlayer != null && isValidMove(loc)) {
+			occupiedSpaces.put(loc, currentPlayer);
+			placed = true;
+			if (!isOver()) {
+				turn++;
+			}
+		}
+		return placed;
+	}
+	
+	public void captureDisks(){
+		//TODO: implement capture after placement of legal move. Unsure about the return type being void
 	}
 	
 	
