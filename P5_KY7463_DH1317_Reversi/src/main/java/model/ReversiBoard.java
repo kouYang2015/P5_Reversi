@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class ReversiBoard implements Serializable{
 	private static final long serialVersionUID = 20211103001L;
 	static final int NUM_SPACES = 64;
-	private int turn = 0;
+	private int turn;
 	private HashMap<Integer, Disks> occupiedSpaces;
 	
 	enum Rows {
@@ -37,6 +37,9 @@ public class ReversiBoard implements Serializable{
 		WHITE, BLACK;
 	}
 	
+	/**
+	 * No-arg constructor
+	 */
 	public ReversiBoard() {
 		occupiedSpaces = new HashMap<Integer, Disks>();
 		turn = 0;
@@ -58,22 +61,67 @@ public class ReversiBoard implements Serializable{
 		return (HashMap<Integer, Disks>) occupiedSpaces.clone();
 	}
 	
+	public Disks getCurrentPlayer () {
+		return (isOver()) ? null :turn%2 == 0 ? Disks.WHITE : Disks.BLACK;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public ArrayList<Integer> findLegalMove(){
 		ArrayList<Integer> legalMoves = new ArrayList<Integer>();
 		//TODO: implement how we add indexes to legalMoves. Check each vertical, horizontal, diagonal array if it contains at least one
 		//currentPlayer color and then iterate through that array to see if any moves exists in it.
+		//A move exists if the there is an opposite color in between the current color and an empty index.
 		return legalMoves;
 	}
 	
-
-	public int findBlackCount() {
-		return 0;	//TODO: find in Hashmap all black
+	public void capture(){
+		
 	}
-	public int findWhiteCount() {
-		return 0;	//TODO: find in Hashmap all white
+	
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int countBlack() {
+		int blackCount = 0;
+		for (int i = 0; i < occupiedSpaces.size(); i++) {
+			if (occupiedSpaces.get(i) == Disks.BLACK) {
+				blackCount++;
+			}
+		}
+		return blackCount;
 	}
-	public Disks findWinner() {
-		return findBlackCount() < findWhiteCount() ? Disks.WHITE : Disks.BLACK;
+	
+	/**
+	 * 
+	 * @return whiteCount: an int value representing the total number of the enum Disk whose property is WHITE.
+	 */
+	public int countWhite() {
+		int whiteCount = 0;
+		for (int i = 0; i < occupiedSpaces.size(); i++) {
+			if (occupiedSpaces.get(i) == Disks.WHITE) {
+				whiteCount++;
+			}
+		}
+		return whiteCount;
+	}
+	
+	/**
+	 * Finds the winner of the game if there is one and the game is over.
+	 * @return 	null: If black has the same amount of disks occupying the spaces as white.
+	 * 			Disk.WHITE: If white has more disks occupying the spaces than black.
+	 * 			Disk.BLACK: If black has more disks occupying the spaces than white.
+	 */
+	public Disks getWinner() {
+		if (isOver() && countBlack() == countWhite()) { //This means we have a tie.
+			return null;
+		}
+		return isOver() && (countBlack() < countWhite()) ? Disks.WHITE : Disks.BLACK; //TODO: check if isOver() works with < conditional
 	}
 	
 	/**
