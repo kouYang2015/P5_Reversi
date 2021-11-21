@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import model.Game.Rows;
-
 public class ReversiBoard implements Serializable{
 	private static final long serialVersionUID = 20211103001L;
 	static final int NUM_SPACES = 64;
