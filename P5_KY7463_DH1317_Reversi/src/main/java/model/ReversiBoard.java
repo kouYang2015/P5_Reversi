@@ -2,7 +2,10 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+
+import model.Game.Rows;
 
 public class ReversiBoard implements Serializable{
 	private static final long serialVersionUID = 20211103001L;
@@ -23,8 +26,6 @@ public class ReversiBoard implements Serializable{
 				{39,46,53,60}, {31,38,45,52,59}, {23,30,37,44,51,58}, {15,22,29,36,43,50,57}, {7,14,21,28,35,42,49,56},
 				{6,13,20,27,34,41,48}, {5,12,19,26,33,40}, {4,11,18,25,32}, {3,10,17,24}, {2,9,16}});
 		
-		
-
 		private int[][] rows;
 
 		Rows(int[][] rows) {
@@ -62,7 +63,7 @@ public class ReversiBoard implements Serializable{
 	}
 	
 	public Disks getCurrentPlayer () {
-		return (isOver()) ? null :turn%2 == 0 ? Disks.WHITE : Disks.BLACK;
+		return (isOver()) ? null :turn % 2 == 0 ? Disks.BLACK : Disks.WHITE;
 	}
 	
 	/**
@@ -71,11 +72,23 @@ public class ReversiBoard implements Serializable{
 	 */
 	public ArrayList<Integer> findLegalMove(){
 		ArrayList<Integer> legalMoves = new ArrayList<Integer>();
+		for (Rows rows : Rows.values()) { //in the Row class, for each value in Rows 
+			for (var row : rows.rows) {	//var picks HORIZONTAL, VERTICAL, DIAGONAL. for each row inside these
+				for(int i = 0; i < row.length; i++) {
+					//for each index in an array, check if the value exists in occupiedSpaces and is not in in legalMoves yet.
+					if (!occupiedSpaces.containsKey(row[i]) && !legalMoves.contains(row[i])) {
+						//check if there exists at least one color and a non empty space.
+					}
+				}
+			}
+		}
 		//TODO: implement how we add indexes to legalMoves. Check each vertical, horizontal, diagonal array if it contains at least one
 		//currentPlayer color and then iterate through that array to see if any moves exists in it.
 		//A move exists if the there is an opposite color in between the current color and an empty index.
 		return legalMoves;
 	}
+	
+	
 	
 	private boolean isValidMove(int loc) {
 		return !isOver() && findLegalMove().contains(loc);
