@@ -69,7 +69,7 @@ public class ReversiBoard implements Serializable{
 	}
 	
 	private Disks getOppositePlayer() {
-		return (isOver()) ? null :turn % 2 == 0 ? Disks.WHITE : Disks.BLACK;
+		return getCurrentPlayer() == Disks.BLACK ? Disks.WHITE : Disks.BLACK;
 	}
 	
 	/**
