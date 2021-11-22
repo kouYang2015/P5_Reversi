@@ -117,6 +117,7 @@ public class ReversiBoard implements Serializable{
 			occupiedSpaces.put(loc, currentPlayer);
 			emptySpaces.remove(loc); //TODO: delete if not using in future. Used to keep track of empty spaces.
 			placed = true;
+			captureDisks(loc);
 			if (!isOver()) {
 				turn++;
 			}
@@ -131,10 +132,7 @@ public class ReversiBoard implements Serializable{
 	 */
 	
 	public void captureDisks(int loc){
-		
-		if (placeDisk(loc)) {
 			flipDisks(getCurrentPlayer(), loc);
-		}
 	}
 	
 	
@@ -154,15 +152,19 @@ public class ReversiBoard implements Serializable{
 						for(int a = loc; a < row.length - 1; a++) {
 							if(occupiedSpaces.get(a) == getOppositePlayer()) {
 								occupiedSpaces.put(a, currentPlayer);
+								}else if(occupiedSpaces.get(a) == getCurrentPlayer()) {
+									break;
 								}
 							
 							}
 						for(int c = loc; c > row[1]; c--) {
 							if(occupiedSpaces.get(c) == getOppositePlayer()) {
 								occupiedSpaces.put(c, currentPlayer);
+								}else if(occupiedSpaces.get(c) == getCurrentPlayer()) {
+									break;
 								}
 							
-						}
+							}
 						
 						}
 					
