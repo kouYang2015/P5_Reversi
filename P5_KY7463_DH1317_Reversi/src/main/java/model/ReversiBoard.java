@@ -10,6 +10,7 @@ public class ReversiBoard implements Serializable{
 	static final int NUM_SPACES = 64;
 	private int turn;
 	private HashMap<Integer, Disks> occupiedSpaces;
+	private ArrayList<Integer> emptySpaces;
 	
 	enum Rows {
 		HORIZONTAL (new int[][] {{0, 1, 2, 3, 4, 5, 6, 7}, {8, 9, 10, 11, 12, 13, 14, 15}, {16, 17, 18, 19, 20, 21, 22, 23},
@@ -42,6 +43,10 @@ public class ReversiBoard implements Serializable{
 	public ReversiBoard() {
 		occupiedSpaces = new HashMap<Integer, Disks>();
 		turn = 0;
+		emptySpaces = new ArrayList<Integer>();
+		for (int i = 0; i<64 ; i++) {
+			emptySpaces.add(i);
+		}
 	}
 
 	/**
@@ -69,7 +74,7 @@ public class ReversiBoard implements Serializable{
 	 * @return
 	 */
 	public ArrayList<Integer> findLegalMove(){
-		ArrayList<Integer> legalMoves = new ArrayList<Integer>();
+		ArrayList<Integer> legalMoves = emptySpaces;
 		for (Rows rows : Rows.values()) { //in the Row class, for each value in Rows 
 			for (var row : rows.rows) {	//var picks HORIZONTAL, VERTICAL, DIAGONAL. for each row inside these
 				for(int i = 0; i < row.length; i++) {
@@ -107,6 +112,7 @@ public class ReversiBoard implements Serializable{
 		boolean placed = false;
 		if (currentPlayer != null && isValidMove(loc)) {
 			occupiedSpaces.put(loc, currentPlayer);
+			emptySpaces.remove(loc); //TODO: delete if not using in future. Used to keep track of empty spaces.
 			placed = true;
 			if (!isOver()) {
 				turn++;
