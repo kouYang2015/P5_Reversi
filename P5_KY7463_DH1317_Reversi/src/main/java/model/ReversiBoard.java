@@ -41,6 +41,10 @@ public class ReversiBoard implements Serializable{
 	 */
 	public ReversiBoard() {
 		occupiedSpaces = new HashMap<Integer, Disks>();
+		occupiedSpaces.put(27, Disks.BLACK);//I dont know if this the proper way to set up the board 
+		occupiedSpaces.put(36, Disks.BLACK);
+		occupiedSpaces.put(28, Disks.WHITE);
+		occupiedSpaces.put(36, Disks.WHITE);
 		turn = 0;
 		emptySpaces = new ArrayList<Integer>();
 		for (int i = 0; i<64 ; i++) {
@@ -77,13 +81,43 @@ public class ReversiBoard implements Serializable{
 	 * @return
 	 */
 	public ArrayList<Integer> findLegalMove(){
-		ArrayList<Integer> legalMoves = emptySpaces;
+		ArrayList<Integer> legalMoves = new ArrayList<Integer>();
 		for (Rows rows : Rows.values()) { //in the Row class, for each value in Rows 
 			for (var row : rows.rows) {	//var picks HORIZONTAL, VERTICAL, DIAGONAL. for each row inside these
 				for(int i = 0; i < row.length; i++) {
 					//for each index in an array, check if the value exists in occupiedSpaces and is not in in legalMoves yet.
 					if (!occupiedSpaces.containsKey(row[i]) && !legalMoves.contains(row[i])) {
 						//check if there exists at least one color and a non empty space.
+						for(int a = row[i]; a < row.length - 1; a++) {
+							if (occupiedSpaces.get(row[a+1]) == getCurrentPlayer() || occupiedSpaces.get(row[a+1]) == null) {
+								break;
+							}else{
+								for (int c = row[i]; c < row.length; c++) {
+									if (occupiedSpaces.get(c) == null) {
+										break;
+									}else if(occupiedSpaces.get(c) == getCurrentPlayer()) {
+										legalMoves.add(row[i]);
+									}
+								}
+							}
+							
+						}
+						for(int b = row[i]; b > row[1]; b--) {
+							if (occupiedSpaces.get(row[b-1]) == getCurrentPlayer() || occupiedSpaces.get(row[b-1]) == null) {
+								break;
+							}else{
+								for (int e = row[i]; e > row[0]; e--) {
+									if (occupiedSpaces.get(e) == null) {
+										break;
+									}else if(occupiedSpaces.get(e) == getCurrentPlayer()) {
+										legalMoves.add(row[i]);
+									}
+								}
+							}
+							
+						}
+						
+						
 					}
 				}
 			}
