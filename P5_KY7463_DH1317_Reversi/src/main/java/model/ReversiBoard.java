@@ -147,7 +147,7 @@ public class ReversiBoard implements Serializable{
 					if(i == loc) {
 						for(int a = loc; a < row.length; a++) {
 							while(occupiedSpaces.get(a) == getOppositePlayer()) {
-								occupiedSpaces.put(loc, currentPlayer);
+								occupiedSpaces.put(a, currentPlayer);
 								}
 							}
 						
