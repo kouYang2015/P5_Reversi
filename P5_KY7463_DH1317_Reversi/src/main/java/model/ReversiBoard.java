@@ -2,7 +2,6 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class ReversiBoard implements Serializable{
@@ -69,6 +68,10 @@ public class ReversiBoard implements Serializable{
 		return (isOver()) ? null :turn % 2 == 0 ? Disks.BLACK : Disks.WHITE;
 	}
 	
+	private Disks getOppositePlayer() {
+		return (isOver()) ? null :turn % 2 == 0 ? Disks.WHITE : Disks.BLACK;
+	}
+	
 	/**
 	 * 
 	 * @return
@@ -121,12 +124,50 @@ public class ReversiBoard implements Serializable{
 		return placed;
 	}
 	
-	public void captureDisks(){
-		//TODO: implement capture after placement of legal move. Unsure about the return type being void
+	/*
+	 * if the disk has been placed flip the opposite colored disks in the same row.
+	 * 
+	 * @param loc the specified board location
+	 */
+	
+	public void captureDisks(int loc){
+		
+		if (placeDisk(loc)) {
+			flipDisks(getCurrentPlayer(), loc);
+		}
 	}
 	
 	
+	/*
+	 * Flips disks that fall along the same row as the most recently placed disk 
+	 * if they are inbetween the current players new and existing disks
+	 * 
+	 * @param loc the specified board location
+	 * @param currentPlayer current player as specified by the turn
+	 */
+	public boolean flipDisks(Disks currentPlayer, int loc) {
+		boolean flipped = false;
+		for (Rows rows : Rows.values()) {
+			for (var row : rows.rows) {
+				for(int i = 0; i < row.length; i++) {
+					if(i == loc) {
+						for(int a = loc; a < row.length; a++) {
+							while(occupiedSpaces.get(a) == getOppositePlayer()) {
+								occupiedSpaces.put(a, currentPlayer);
+								}
+							}
+						
+						}
+					
+					}
+					
+				}
+					flipped = true;
+			}
+				return flipped;
+		}
 	
+
 	/**
 	 * 
 	 * @return
