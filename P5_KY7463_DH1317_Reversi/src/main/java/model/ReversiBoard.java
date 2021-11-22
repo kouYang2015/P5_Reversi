@@ -150,12 +150,19 @@ public class ReversiBoard implements Serializable{
 		for (Rows rows : Rows.values()) {
 			for (var row : rows.rows) {
 				for(int i = 0; i < row.length; i++) {
-					if(i == loc) {
-						for(int a = loc; a < row.length; a++) {
-							while(occupiedSpaces.get(a) == getOppositePlayer()) {
+					if(row[i] == loc) {
+						for(int a = loc; a < row.length - 1; a++) {
+							if(occupiedSpaces.get(a) == getOppositePlayer()) {
 								occupiedSpaces.put(a, currentPlayer);
 								}
+							
 							}
+						for(int c = loc; c > row[1]; c--) {
+							if(occupiedSpaces.get(c) == getOppositePlayer()) {
+								occupiedSpaces.put(c, currentPlayer);
+								}
+							
+						}
 						
 						}
 					
