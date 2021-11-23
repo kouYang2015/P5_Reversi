@@ -48,7 +48,7 @@ public class ReversiBoard implements Serializable{
 		turn = 0;
 		emptySpaces = new ArrayList<Integer>();
 		for (int i = 0; i<64 ; i++) {
-			if (i != 27 || i != 28 || i != 36 || i != 37) {
+			if (i != 27 || i != 28 || i != 35 || i != 36) {
 				emptySpaces.add(i);
 			}
 		}
