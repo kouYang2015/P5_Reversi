@@ -165,6 +165,7 @@ public class ReversiBoard implements Serializable{
 								}
 								else if (occupiedSpaces.get(j) == getCurrentPlayer()) {
 									legalMoves.add(row[i-1]);
+									break;
 								}
 							}
 						}
@@ -175,6 +176,7 @@ public class ReversiBoard implements Serializable{
 								}
 								else if (occupiedSpaces.get(j) == getCurrentPlayer()) {
 									legalMoves.add(row[i+1]);
+									break;
 								}
 							}
 						}
