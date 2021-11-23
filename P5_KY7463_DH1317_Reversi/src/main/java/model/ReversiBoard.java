@@ -41,19 +41,22 @@ public class ReversiBoard implements Serializable{
 	 */
 	public ReversiBoard() {
 		occupiedSpaces = new HashMap<Integer, Disks>();
-		occupiedSpaces.put(27, Disks.BLACK);//I dont know if this the proper way to set up the board 
-		occupiedSpaces.put(28, Disks.WHITE);
-		occupiedSpaces.put(35, Disks.WHITE);
-		occupiedSpaces.put(36, Disks.BLACK);
-		turn = 0;
 		emptySpaces = new ArrayList<Integer>();
-		for (int i = 0; i<64 ; i++) {
-			if (i == 27 || i == 28 || i == 35 || i == 36) {
-				continue;
-			}emptySpaces.add(i);
-		}
+		turn = 1;
+		setupBoard();
 	}
 
+	
+	private void setupBoard() {
+		for (int i = 0; i<64 ; i++) {
+			emptySpaces.add(i);
+		}
+		placeDisk(Disks.WHITE, 27);
+		placeDisk(Disks.BLACK, 28);
+		placeDisk(Disks.BLACK, 35);
+		placeDisk(Disks.WHITE, 36);
+	}
+	
 	/**
 	 * 
 	 * @return the turn
@@ -92,11 +95,6 @@ public class ReversiBoard implements Serializable{
 		}
 	}
 
-	public int[][] findRows(int loc){
-		int [][] relevantRows = new int[1][1];
-		return relevantRows;
-	}
-
 	/**
 	 * Checks if the currentPlayer has at least one disk in the array.
 	 * @param rowArray
@@ -125,27 +123,6 @@ public class ReversiBoard implements Serializable{
 			if (emptySpaces.contains(rowArray[i])) {
 				return true;
 			}
-		}
-		return false;
-	}
-
-	/**
-	 * This method is only called after we validate it has an empty index inside it. Then we check each pair if there 
-	 * @param rowArray
-	 * @return
-	 */
-	public boolean willFlip(int loc, int[] rowArray) {
-		int cur = loc;
-		boolean hasOther = false;
-		boolean endsMine = false;
-		while (cur >= 0 && cur <= 64 && arrayContainsLoc(rowArray, cur)) {
-			if (occupiedSpaces.get(cur) == getOppositePlayer() && endsMine == false) {
-				hasOther = true;
-			}
-			if (occupiedSpaces.get(cur) == getCurrentPlayer() && hasOther == true) {
-				endsMine = true;
-			}
-			cur++;
 		}
 		return false;
 	}
@@ -263,17 +240,16 @@ public class ReversiBoard implements Serializable{
 	}
 	
 	private boolean placeDisk(Disks currentPlayer, int loc) {
-		boolean placed = false;
-		if (currentPlayer != null && isValidMove(loc)) {
-			occupiedSpaces.put(loc, currentPlayer);
-			emptySpaces.remove(loc); //TODO: delete if not using in future. Used to keep track of empty spaces.
-			placed = true;
-			captureDisks(loc);
-			if (!isOver()) {
+		if (isValidMove(loc)) {
+			occupiedSpaces.put(loc, currentPlayer);			//Place into hashmap our new disk
+			emptySpaces.remove(emptySpaces.indexOf(loc));	//Remove from emptySpaces the loc using removeEmptySpace method
+			captureDisks(loc);		//Capture the disks
+			if (!isOver()) {		
 				turn++;
 			}
+			return true;
 		}
-		return placed;
+		return false;
 	}
 	
 	/*
@@ -283,7 +259,7 @@ public class ReversiBoard implements Serializable{
 	 */
 	
 	public void captureDisks(int loc){
-			flipDisks(getCurrentPlayer(), loc);
+		flipDisks(getCurrentPlayer(), loc);
 	}
 	
 	
@@ -294,38 +270,34 @@ public class ReversiBoard implements Serializable{
 	 * @param loc the specified board location
 	 * @param currentPlayer current player as specified by the turn
 	 */
-	public boolean flipDisks(Disks currentPlayer, int loc) {
+	private boolean flipDisks(Disks currentPlayer, int loc) {
 		boolean flipped = false;
 		for (Rows rows : Rows.values()) {
 			for (var row : rows.rows) {
-				for(int i = 0; i < row.length; i++) {
-					if(row[i] == loc) {
-						for(int a = loc; a < row.length - 1; a++) {
-							if(occupiedSpaces.get(a) == getOppositePlayer()) {
-								occupiedSpaces.put(a, currentPlayer);
-								}else if(occupiedSpaces.get(a) == getCurrentPlayer()) {
-									break;
-								}
-							
+				for (int i = 0; i < row.length; i++) {
+					if (row[i] == loc) {
+						for (int posCur = loc; posCur < row.length; posCur++) {
+							if (occupiedSpaces.get(row[posCur]) == getOppositePlayer()) {
+								occupiedSpaces.replace(row[posCur], getOppositePlayer(), currentPlayer);
+								flipped = true;
+							} else if (occupiedSpaces.get(row[posCur]) == getCurrentPlayer()) {
+								break;
 							}
-						for(int c = loc; c > row[1]; c--) {
-							if(occupiedSpaces.get(c) == getOppositePlayer()) {
-								occupiedSpaces.put(c, currentPlayer);
-								}else if(occupiedSpaces.get(c) == getCurrentPlayer()) {
-									break;
-								}
-							
-							}
-						
 						}
-					
+						for (int negCur = loc; negCur > 1; negCur--) {
+							if (occupiedSpaces.get(row[negCur]) == getOppositePlayer()) {
+								occupiedSpaces.replace(row[negCur], getOppositePlayer(), currentPlayer);
+								flipped = true;
+							} else if (occupiedSpaces.get(row[negCur]) == getCurrentPlayer()) {
+								break;
+							}
+						}
 					}
-					
 				}
-					flipped = true;
 			}
-				return flipped;
 		}
+		return flipped;
+	}
 	
 
 	/**
