@@ -76,55 +76,151 @@ public class ReversiBoard implements Serializable{
 		return getCurrentPlayer() == Disks.BLACK ? Disks.WHITE : Disks.BLACK;
 	}
 	
+	public void testForRow() {
+		short valueCounter = 0; //We have 3 enum objects (HORIZONTAL, VERTICAL, DIAGONAL). This value isn't used to find index of an array.
+		for (Rows rowsEnum : Rows.values()) { // in the Row class, for each rowsEnum we have (3 times)
+			System.out.println("\nNew value: Horizontal/Vertical/Diagonal " + valueCounter++);
+			short arrayCounter = 0; //The first index value in the int[][]
+			for (var row : rowsEnum.rows) {
+				System.out.println("\nNew Array " + arrayCounter++);	//Prints a new line when we move onto the next array in either Horizontal, Vertical, Diagonal
+				for (int value : row) {		//For each value in one array, print its value (The 2nd index value in the int[][])
+					System.out.print(value + ", ");
+				}
+			}
+		}
+	}
+	
+	public int[][] findRows(int loc){
+		int [][] relevantRows = new int[1][1];
+		return relevantRows;
+	}
+	
+	/**
+	 * Checks if the currentPlayer has at least one disk in the array.
+	 * @param rowArray
+	 * @return
+	 */
+	public boolean arrayContainsCurrentPlayer(int[] rowArray){
+		for (int i = 0; i < rowArray.length; i++) {
+			if (occupiedSpaces.get(rowArray[i]) == getCurrentPlayer()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean arrayContainsLoc(int[] rowArray, int loc) {
+		for (int i = 0; i < rowArray.length; i++) {
+			if (rowArray[i] == loc) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean arrayContainsEmpty(int[] rowArray) {
+		for (int i = 0; i < rowArray.length; i++) {
+			if (emptySpaces.contains(rowArray[i])) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * This method is only called after we validate it has an empty index inside it. Then we check each pair if there 
+	 * @param rowArray
+	 * @return
+	 */
+	public boolean willFlip(int[] rowArray) {
+		for (int i = 0; i < rowArray.length-2; i++) {	//forward iteration
+			if (emptySpaces.contains(rowArray[i]) && !emptySpaces.contains(rowArray[i+1])) {
+				for (int j = i; j < rowArray.length-2; j++) {
+					
+				}
+			}
+				if (getOppositePlayer() == occupiedSpaces.get(rowArray[i+1])) { //checks if currentIndex == opposite color
+					if (getCurrentPlayer() == occupiedSpaces.get(rowArray[i+2])) { //checks if currentIndex+1 == current color
+						return true;
+					}
+				}
+				else if (getOppositePlayer() == occupiedSpaces.get(rowArray[i])) { //checks if currentIndex == opposite color
+					if (getCurrentPlayer() == occupiedSpaces.get(rowArray[i+1])) { //checks if currentIndex+1 == current color
+						return true;
+					}
+				}
+		}
+		for (int i = rowArray.length-1; i > 1; i--) {	//reverse iteration
+			if (getCurrentPlayer() == occupiedSpaces.get(rowArray[i])) { //checks if currentIndex == current color
+				if (getOppositePlayer() == occupiedSpaces.get(rowArray[i-1])) { //checks if currentIndex+1 == opposite color
+					return true;
+				}
+			}
+			else if (getOppositePlayer() == occupiedSpaces.get(rowArray[i])) { //checks if currentIndex == opposite color
+				if (getCurrentPlayer() == occupiedSpaces.get(rowArray[i-1])) { //checks if currentIndex+1 == current color
+					return true;
+				}
+			}
+	}
+		return false;
+	}
+	
 	/**
 	 * 
 	 * @return
 	 */
-	public ArrayList<Integer> findLegalMove(){
+	public ArrayList<Integer> findLegalMove() {
 		ArrayList<Integer> legalMoves = new ArrayList<Integer>();
-		for (Rows rows : Rows.values()) { //in the Row class, for each value in Rows 
-			for (var row : rows.rows) {	//var picks HORIZONTAL, VERTICAL, DIAGONAL. for each row inside these
-				for(int i = 0; i < row.length; i++) {
-					//for each index in an array, check if the value exists in occupiedSpaces and is not in in legalMoves yet.
-					if (!occupiedSpaces.containsKey(row[i]) && !legalMoves.contains(row[i])) {
-						//check if there exists at least one color and a non empty space.
-						for(int a = row[i]; a < row.length - 1; a++) {
-							if (occupiedSpaces.get(row[a+1]) == getCurrentPlayer() || occupiedSpaces.get(row[a+1]) == null) {
-								break;
-							}else{
+		for (Rows rows : Rows.values()) { // in the Row class, for each value in Rows
+			for (var row : rows.rows) { // var picks HORIZONTAL, VERTICAL, DIAGONAL. for each row inside these
+//				if (arrayContainsEmpty(row) && arrayContainsCurrentPlayer(row)) { //if the current array has at least one empty spot and has at least on currentplayer disk then it is a relevant array
+//					
+//				}
+				for (int i = 0; i < row.length; i++) {
+					// for each index in an array, check if the value exists in occupiedSpaces and
+					// is not in in legalMoves yet.
+					if (!occupiedSpaces.containsKey(row[i]) && legalMoves.contains(row[i])) {
+						// check if there exists at least one color and a non empty space.
+						for (int a = row[i] + 1; a < row.length - 1; a++) {
+							//boolean willFlip = false;
+							if (occupiedSpaces.get(row[a]).equals(getCurrentPlayer()) || emptySpaces.contains(a)) {
+								break; // We stop checking the rest of the index if we find the index after the empty
+										// is the currentPlayer color or is empty
+							} 
+							else {
 								for (int c = row[i]; c < row.length; c++) {
 									if (occupiedSpaces.get(c) == null) {
 										break;
-									}else if(occupiedSpaces.get(c) == getCurrentPlayer()) {
+									} else if (occupiedSpaces.get(c) == getCurrentPlayer()) {
 										legalMoves.add(row[i]);
 									}
 								}
 							}
-							
 						}
-						for(int b = row[i]; b > row[1]; b--) {
-							if (occupiedSpaces.get(row[b-1]) == getCurrentPlayer() || occupiedSpaces.get(row[b-1]) == null) {
-								break;
-							}else{
-								for (int e = row[i]; e > row[0]; e--) {
-									if (occupiedSpaces.get(e) == null) {
-										break;
-									}else if(occupiedSpaces.get(e) == getCurrentPlayer()) {
-										legalMoves.add(row[i]);
-									}
-								}
-							}
-							
-						}
-						
-						
 					}
-				}
-			}
-		}
-		//TODO: implement how we add indexes to legalMoves. Check each vertical, horizontal, diagonal array if it contains at least one
-		//currentPlayer color and then iterate through that array to see if any moves exists in it.
-		//A move exists if the there is an opposite color in between the current color and an empty index.
+					for (int b = row[i]; b > row[1]; b--) {
+						if (occupiedSpaces.get(row[b - 1]) == getCurrentPlayer()
+								|| occupiedSpaces.get(row[b - 1]) == null) {
+							break;
+						} else {
+							for (int e = row[i]; e > row[0]; e--) {
+								if (occupiedSpaces.get(e) == null) {
+									break;
+								} else if (occupiedSpaces.get(e) == getCurrentPlayer()) {
+									legalMoves.add(row[i]);
+								}
+							}
+						}
+					} // close reverse iteration
+				} // close each index in array for loop
+			} // close for each array loop (8, 8, 22 loop)
+		} // close for rowEnum loop (3 loop)
+		// TODO: implement how we add indexes to legalMoves. Check each vertical,
+		// horizontal, diagonal array if it contains at least one
+		// currentPlayer color and then iterate through that array to see if any moves
+		// exists in it.
+		// A move exists if the there is an opposite color in between the current color
+		// and an empty index.
 		return legalMoves;
 	}
 	

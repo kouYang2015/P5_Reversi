@@ -8,7 +8,8 @@ class ReversiBoardTest {
 
 	@Test
 	void test() {
-		 
+		 var rb = new ReversiBoard();
+		 rb.testForRow();
 	}
 
 }
