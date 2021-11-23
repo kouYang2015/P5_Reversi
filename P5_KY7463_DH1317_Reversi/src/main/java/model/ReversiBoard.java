@@ -42,13 +42,15 @@ public class ReversiBoard implements Serializable{
 	public ReversiBoard() {
 		occupiedSpaces = new HashMap<Integer, Disks>();
 		occupiedSpaces.put(27, Disks.BLACK);//I dont know if this the proper way to set up the board 
-		occupiedSpaces.put(36, Disks.BLACK);
 		occupiedSpaces.put(28, Disks.WHITE);
-		occupiedSpaces.put(36, Disks.WHITE);
+		occupiedSpaces.put(35, Disks.WHITE);
+		occupiedSpaces.put(36, Disks.BLACK);
 		turn = 0;
 		emptySpaces = new ArrayList<Integer>();
 		for (int i = 0; i<64 ; i++) {
-			emptySpaces.add(i);
+			if (i != 27 || i != 28 || i != 36 || i != 37) {
+				emptySpaces.add(i);
+			}
 		}
 	}
 
