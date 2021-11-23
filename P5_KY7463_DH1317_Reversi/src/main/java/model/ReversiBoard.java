@@ -48,9 +48,9 @@ public class ReversiBoard implements Serializable{
 		turn = 0;
 		emptySpaces = new ArrayList<Integer>();
 		for (int i = 0; i<64 ; i++) {
-			if (i != 27 || i != 28 || i != 35 || i != 36) {
-				emptySpaces.add(i);
-			}
+			if (i == 27 || i == 28 || i == 35 || i == 36) {
+				continue;
+			}emptySpaces.add(i);
 		}
 	}
 
@@ -71,7 +71,7 @@ public class ReversiBoard implements Serializable{
 	}
 	
 	public Disks getCurrentPlayer () {
-		return (isOver()) ? null :turn % 2 == 0 ? Disks.BLACK : Disks.WHITE;
+		return turn % 2 == 0 ? Disks.BLACK : Disks.WHITE;
 	}
 	
 	private Disks getOppositePlayer() {
@@ -158,25 +158,35 @@ public class ReversiBoard implements Serializable{
 		ArrayList<Integer> legalMoves = new ArrayList<Integer>();
 		for (Rows rows : Rows.values()) { // in the Row class, for each value in Rows
 			for (var row : rows.rows) { // var picks HORIZONTAL, VERTICAL, DIAGONAL. for each row inside these
+//				System.out.println();
+//				for (int k = 1; k< row.length; k++) {
+//					System.out.print(row[k] + " ");
+//				}
 				if (arrayContainsEmpty(row) && arrayContainsCurrentPlayer(row)) { //if the current array has at least one empty spot and has at least on currentplayer disk then it is a relevant array
 					for (int i = 1; i < row.length-1; i++) {
-						if (occupiedSpaces.get(row[i]).equals(getOppositePlayer()) && emptySpaces.contains(row[i-1])) { //Found a nonempty index at i and previos index is empty
+						if (occupiedSpaces.get(row[i]) == getOppositePlayer() && emptySpaces.contains(row[i-1])) { //Found a nonempty index at i and previos index is empty
+							//System.out.println(row[i]);
 							for (int j = i+1; j < row.length; j++) { //Iterate forward from current position where if statement is true try to find
+//								System.out.println("Checking " + row[j] + " is empty?" + emptySpaces.contains(row[j]));
+//								boolean statement = (occupiedSpaces.get(j) == getCurrentPlayer());
+//								System.out.println("Checking " + row[j] + " has currentColor?" + statement);
+//								System.out.println(row[j] + " has color " + occupiedSpaces.get(row[j]));
 								if (emptySpaces.contains(row[j])) {
 									break;
 								}
-								else if (occupiedSpaces.get(j) == getCurrentPlayer()) {
+								else if (occupiedSpaces.get(row[j]) == getCurrentPlayer()) {
 									legalMoves.add(row[i-1]);
 									break;
 								}
 							}
 						}
-						else if (occupiedSpaces.get(row[i]).equals(getOppositePlayer()) && emptySpaces.contains(row[i+1])) { //Found a nonempty index at i and next index is empty
+						else if (occupiedSpaces.get(row[i]) == getOppositePlayer() && emptySpaces.contains(row[i+1])) { //Found a nonempty index at i and next index is empty
 							for (int j = i-1; j > 0; j--) { //Iterate backwards
+								//System.out.println("emptyIndex is " + row[j]);
 								if (emptySpaces.contains(row[j])) { 
 									break;
 								}
-								else if (occupiedSpaces.get(j) == getCurrentPlayer()) {
+								else if (occupiedSpaces.get(row[j]) == getCurrentPlayer()) {
 									legalMoves.add(row[i+1]);
 									break;
 								}
