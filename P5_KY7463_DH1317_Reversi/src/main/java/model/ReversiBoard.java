@@ -11,6 +11,7 @@ public class ReversiBoard implements Serializable{
 	private HashMap<Integer, Disks> occupiedSpaces;
 	private ArrayList<Integer> emptySpaces;
 	
+	
 	enum Rows {
 		HORIZONTAL (new int[][] {{0, 1, 2, 3, 4, 5, 6, 7}, {8, 9, 10, 11, 12, 13, 14, 15}, {16, 17, 18, 19, 20, 21, 22, 23},
 					{24, 25, 26, 27, 28, 29, 30, 31}, {32, 33, 34, 35, 36, 37, 38, 39}, {40, 41, 42, 43, 44, 45, 46, 47},
@@ -32,9 +33,11 @@ public class ReversiBoard implements Serializable{
 		
 	}
 	
+	
 	enum Disks{
 		WHITE, BLACK;
 	}
+	
 	
 	/**
 	 * No-arg constructor
@@ -45,8 +48,11 @@ public class ReversiBoard implements Serializable{
 		turn = 1;
 		setupBoard();
 	}
-
 	
+
+	/*
+	 * Sets up the board by placing disks in the starting spots
+	 */
 	private void setupBoard() {
 		for (int i = 0; i<64 ; i++) {
 			if (i == 27 || i == 28 || i == 35 || i == 36) {
@@ -60,6 +66,7 @@ public class ReversiBoard implements Serializable{
 		occupiedSpaces.put(36, Disks.WHITE);
 	}
 	
+	
 	/**
 	 * 
 	 * @return the turn
@@ -67,6 +74,7 @@ public class ReversiBoard implements Serializable{
 	public int getTurn() {
 		return turn;
 	}
+	
 
 	/**
 	 * @return the occupiedSpaces
@@ -76,14 +84,25 @@ public class ReversiBoard implements Serializable{
 		return (HashMap<Integer, Disks>) occupiedSpaces.clone();
 	}
 	
+	
+	/*
+	 * @return the current player based off of turn count
+	 */
 	public Disks getCurrentPlayer () {
 		return turn % 2 == 0 ? Disks.WHITE : Disks.BLACK;
 	}
 	
+	
+	/*
+	 * @return the opposite player based off of the current player
+	 */
 	private Disks getOppositePlayer() {
 		return getCurrentPlayer() == Disks.BLACK ? Disks.WHITE : Disks.BLACK;
 	}
-
+	
+	/*
+	 * TODO i dont know if you still want this one
+	 */
 	public void testForRow() {
 		short valueCounter = 0; //We have 3 enum objects (HORIZONTAL, VERTICAL, DIAGONAL). This value isn't used to find index of an array.
 		for (Rows rowsEnum : Rows.values()) { // in the Row class, for each rowsEnum we have (3 times)
@@ -97,11 +116,12 @@ public class ReversiBoard implements Serializable{
 			}
 		}
 	}
+	
 
 	/**
 	 * Checks if the currentPlayer has at least one disk in the array.
-	 * @param rowArray
-	 * @return
+	 * 
+	 * @param {int[]} rowArray
 	 */
 	public boolean arrayContainsCurrentPlayer(int[] rowArray){
 		for (int i = 0; i < rowArray.length; i++) {
@@ -111,7 +131,14 @@ public class ReversiBoard implements Serializable{
 		}
 		return false;
 	}
-
+	
+	
+	/*
+	 * Checks a row array for the Hashmap location
+	 * 
+	 * @param {int[]} rowArray
+	 * @param {int} loc
+	 */
 	public boolean arrayContainsLoc(int[] rowArray, int loc) {
 		for (int i = 0; i < rowArray.length; i++) {
 			if (rowArray[i] == loc) {
@@ -121,6 +148,13 @@ public class ReversiBoard implements Serializable{
 		return false;
 	}
 	
+	
+	/*
+	 * Returns the index as an integer of a location inside an array
+	 * 
+	 * @param {int[]} rowArray
+	 * @param {int} loc
+	 */
 	private int getLocInArray(int[] rowArray, int loc) {
 		int locIndex = -1;
 		for (int i = 0; i < rowArray.length; i++) {
@@ -131,7 +165,13 @@ public class ReversiBoard implements Serializable{
 		}
 		return locIndex;
 	}
+	
 
+	/*
+	 * Checks the array for empty spaces
+	 * 
+	 * @param {int[]} rowArray
+	 */
 	public boolean arrayContainsEmpty(int[] rowArray) {
 		for (int i = 0; i < rowArray.length; i++) {
 			if (emptySpaces.contains(rowArray[i])) {
@@ -141,9 +181,11 @@ public class ReversiBoard implements Serializable{
 		return false;
 	}
 	
+	
 	/**
+	 * Returns an array with all Hashmap locations that are considered a legal move
 	 * 
-	 * @return
+	 * @return {ArrayList<Integer>} legalMoves
 	 */
 	public ArrayList<Integer> findLegalMove() {
 		ArrayList<Integer> legalMoves = new ArrayList<Integer>();
@@ -191,9 +233,16 @@ public class ReversiBoard implements Serializable{
 		return legalMoves;
 	}
 	
+	
+	/*
+	 * Determines if a location is a valid location
+	 * 
+	 * @param {int} loc
+	 */
 	private boolean isValidMove(int loc) {
 		return !isOver() && findLegalMove().contains(loc);
 	}
+	
 	
 	/**
 	 * Returns true iff able to place the mark of the current player into the
@@ -206,6 +255,13 @@ public class ReversiBoard implements Serializable{
 		return placeDisk(getCurrentPlayer(), loc);
 	}
 	
+	
+	/*
+	 * Places the current players disk in a specified location
+	 * 
+	 * @param {Disks} currentPlayer
+	 * @param {int} loc
+	 */
 	private boolean placeDisk(Disks currentPlayer, int loc) {
 		if (isValidMove(loc)) {
 			occupiedSpaces.put(loc, currentPlayer);			//Place into hashmap our new disk
@@ -249,6 +305,14 @@ public class ReversiBoard implements Serializable{
 		return flipped;
 	}
 	
+	
+	/*
+	 * Flips Disks captured by a player based on their location in an array
+	 * 
+	 * @param {int[]} row
+	 * @param {int} loc
+	 * @param {Disks} currentPlayer
+	 */
 	private boolean flipDisksInArray(int[] row, int loc, Disks currentPlayer) {
 		int locIndex = getLocInArray(row, loc);
 		boolean flipped = false;
@@ -276,7 +340,16 @@ public class ReversiBoard implements Serializable{
 		}
 		return flipped;
 	}
-
+	
+	
+	/*
+	 * Determines if disks will be flipped "forward" based on the disk colors surrounding 
+	 * the disk at the location it was placed
+	 * 
+	 * @param {int[]} row
+	 * @param {int} locIndex
+	 * @param {Disks} currentPlayer
+	 */
 	private boolean willFlipForward(int[] row, int locIndex, Disks currentPlayer) {
 		boolean hasOthers = false;
 //		System.out.println();
@@ -305,6 +378,15 @@ public class ReversiBoard implements Serializable{
 		return false;
 	}
 	
+	
+	/*
+	 * Determines if disks will be flipped "backward" based on the disk colors surrounding 
+	 * the disk at the location it was placed
+	 * 
+	 * @param {int[]} row
+	 * @param {int} locIndex
+	 * @param {Disks} currentPlayer
+	 */
 	private boolean willFlipBackwards(int[] row, int locIndex, Disks currentPlayer) {
 		boolean hasOthers = false;
 		for (int i = locIndex; i > 0; i--) {
@@ -326,9 +408,12 @@ public class ReversiBoard implements Serializable{
 		return false;
 	}
 	
+	
 	/**
+	 * Returns an integer that represents all instances of black disks based 
+	 * on the occupiedSpaces hashmap
 	 * 
-	 * @return
+	 * @return {int} blackCount
 	 */
 	public int countBlack() {
 		int blackCount = 0;
@@ -341,8 +426,10 @@ public class ReversiBoard implements Serializable{
 	}
 	
 	/**
+	 * Returns an integer that represents all instances of white disks based 
+	 * on the occupiedSpaces hashmap
 	 * 
-	 * @return whiteCount: an int value representing the total number of the enum Disk whose property is WHITE.
+	 * @return {int} whiteCount
 	 */
 	public int countWhite() {
 		int whiteCount = 0;
@@ -353,6 +440,7 @@ public class ReversiBoard implements Serializable{
 		}
 		return whiteCount;
 	}
+	
 	
 	/**
 	 * Finds the winner of the game if there is one and the game is over.
@@ -366,6 +454,7 @@ public class ReversiBoard implements Serializable{
 		}
 		return isOver() && (countBlack() < countWhite()) ? Disks.WHITE : Disks.BLACK; //TODO: check if isOver() works with < conditional
 	}
+	
 	
 	/**
 	 * The game is over if there are no legal moves left or if the turn is equal to the NUM_SPACES meaning we have filled up the board.
