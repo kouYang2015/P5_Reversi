@@ -117,6 +117,17 @@ public class ReversiBoard implements Serializable{
 		}
 		return false;
 	}
+	
+	private int getLocInArray(int[] rowArray, int loc) {
+		int locIndex = -1;
+		for (int i = 0; i < rowArray.length; i++) {
+			if (rowArray[i] == loc) {
+				locIndex = i;
+				break;
+			}
+		}
+		return locIndex;
+	}
 
 	public boolean arrayContainsEmpty(int[] rowArray) {
 		for (int i = 0; i < rowArray.length; i++) {
@@ -141,7 +152,7 @@ public class ReversiBoard implements Serializable{
 //				}
 				if (arrayContainsEmpty(row) && arrayContainsCurrentPlayer(row)) { //if the current array has at least one empty spot and has at least on currentplayer disk then it is a relevant array
 					for (int i = 1; i < row.length-1; i++) {
-						if (occupiedSpaces.get(row[i]) == getOppositePlayer() && emptySpaces.contains(row[i-1])) { //Found a nonempty index at i and previos index is empty
+						if (occupiedSpaces.get(row[i]) == getOppositePlayer() && emptySpaces.contains(row[i-1]) && !legalMoves.contains(row[i-1])) { //Found a nonempty index at i and previos index is empty
 							//System.out.println(row[i]);
 							for (int j = i+1; j < row.length; j++) { //Iterate forward from current position where if statement is true try to find
 //								System.out.println("Checking " + row[j] + " is empty?" + emptySpaces.contains(row[j]));
@@ -157,7 +168,7 @@ public class ReversiBoard implements Serializable{
 								}
 							}
 						}
-						else if (occupiedSpaces.get(row[i]) == getOppositePlayer() && emptySpaces.contains(row[i+1])) { //Found a nonempty index at i and next index is empty
+						if (occupiedSpaces.get(row[i]) == getOppositePlayer() && emptySpaces.contains(row[i+1]) && !legalMoves.contains(row[i-1])) { //Found a nonempty index at i and next index is empty
 							for (int j = i-1; j > 0; j--) { //Iterate backwards
 								//System.out.println("emptyIndex is " + row[j]);
 								if (emptySpaces.contains(row[j])) { 
@@ -181,48 +192,6 @@ public class ReversiBoard implements Serializable{
 		// and an empty index.
 		return legalMoves;
 	}
-	
-//	public void findlegalmoveforloop() {
-//		for (int i = 0; i < row.length; i++) {
-//			// for each index in an array, check if the value exists in occupiedSpaces and
-//			// is not in in legalMoves yet.
-//			if (!occupiedSpaces.containsKey(row[i]) && !legalMoves.contains(row[i])) { //if true that means this loc is an empty spot
-//				// check if there exists at least one color and a non empty space.
-//				for (int a = row[i] + 1; a < row.length - 1; a++) {
-//					//boolean willFlip = false;
-//					if (occupiedSpaces.get(row[a]).equals(getCurrentPlayer()) || emptySpaces.contains(a)) {
-//						break; // We stop checking the rest of the index if we find the index after the empty
-//								// is the currentPlayer color or is empty
-//					} 
-//					else {
-//						for (int c = row[i]; c < row.length; c++) {
-//							if (occupiedSpaces.get(c) == null) {
-//								break;
-//							} else if (occupiedSpaces.get(c) == getCurrentPlayer()) {
-//								legalMoves.add(row[i]);
-//							}
-//						}
-//					}
-//				}
-//			}
-//			for (int b = row[i]; b > row[1]; b--) {
-//				if (occupiedSpaces.get(row[b - 1]) == getCurrentPlayer()
-//						|| occupiedSpaces.get(row[b - 1]) == null) {
-//					break;
-//				} else {
-//					for (int e = row[i]; e > row[0]; e--) {
-//						if (occupiedSpaces.get(e) == null) {
-//							break;
-//						} else if (occupiedSpaces.get(e) == getCurrentPlayer()) {
-//							legalMoves.add(row[i]);
-//						}
-//					}
-//				}
-//			} // close reverse iteration
-//		} // close each index in array for loop
-//	}
-	
-	
 	
 	private boolean isValidMove(int loc) {
 		return !isOver() && findLegalMove().contains(loc);
@@ -274,32 +243,77 @@ public class ReversiBoard implements Serializable{
 		boolean flipped = false;
 		for (Rows rows : Rows.values()) {
 			for (var row : rows.rows) {
-				for (int i = 0; i < row.length; i++) {
-					if (row[i] == loc) {
-						for (int posCur = loc; posCur < row.length; posCur++) {
-							if (occupiedSpaces.get(row[posCur]) == getOppositePlayer()) {
-								occupiedSpaces.replace(row[posCur], getOppositePlayer(), currentPlayer);
-								flipped = true;
-							} else if (occupiedSpaces.get(row[posCur]) == getCurrentPlayer()) {
-								break;
-							}
-						}
-						for (int negCur = loc; negCur > 1; negCur--) {
-							if (occupiedSpaces.get(row[negCur]) == getOppositePlayer()) {
-								occupiedSpaces.replace(row[negCur], getOppositePlayer(), currentPlayer);
-								flipped = true;
-							} else if (occupiedSpaces.get(row[negCur]) == getCurrentPlayer()) {
-								break;
-							}
-						}
-					}
+				if (arrayContainsLoc(row, loc)) {
+					flipDisksInArray(row, loc, currentPlayer);
+					flipped = true;
 				}
 			}
 		}
 		return flipped;
 	}
 	
+	private void flipDisksInArray(int[] row, int loc, Disks currentPlayer) {
+		int locIndex = getLocInArray(row, loc);
+		if (locIndex >= 0 && willFlipForward(row, locIndex, currentPlayer)) {
+			for (int posCur = locIndex; posCur < row.length; posCur++) {
+				if (occupiedSpaces.get(row[posCur]) == getOppositePlayer()) {
+					occupiedSpaces.replace(row[posCur], getOppositePlayer(), currentPlayer);
+				} else if (occupiedSpaces.get(row[posCur]) == getCurrentPlayer()) {
+					break;
+				}
+			}
+		}
+		if (locIndex >= 0 && willFlipBackwards(row, loc, currentPlayer)) {
+			for (int negCur = locIndex; negCur > 1; negCur--) {
+				if (occupiedSpaces.get(row[negCur]) == getOppositePlayer()) {
+					occupiedSpaces.replace(row[negCur], getOppositePlayer(), currentPlayer);
+				} else if (occupiedSpaces.get(row[negCur]) == getCurrentPlayer()) {
+					break;
+				}
+			}
+		}
+	}
 
+	private boolean willFlipForward(int[] row, int locIndex, Disks currentPlayer) {
+		boolean hasOthers = false;
+		for (int i = locIndex; i < row.length; i++) {
+			if (occupiedSpaces.get(row[i]) == currentPlayer) {
+				for (int j = i+1; j < row.length; j++) { //Iterate forward from current position where if statement is true try to find
+					if (occupiedSpaces.get(row[j]) == getOppositePlayer()) {
+						hasOthers = true;
+					}
+					else if (occupiedSpaces.get(row[j]) == getCurrentPlayer()) {
+						return false;
+					}
+					else if (occupiedSpaces.get(row[j]) == getCurrentPlayer() && hasOthers) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	private boolean willFlipBackwards(int[] row, int locIndex, Disks currentPlayer) {
+		boolean hasOthers = false;
+		for (int i = locIndex; i > 0; i--) {
+			if (occupiedSpaces.get(row[i]) == currentPlayer) {
+				for (int j = i-1; j > 0; j--) { //Iterate backward from current position where if statement is true try to find
+					if (occupiedSpaces.get(row[j]) == getOppositePlayer()) {
+						hasOthers = true;	//There is the opposite color before
+					}
+					else if (occupiedSpaces.get(row[j]) == getCurrentPlayer()) {
+						return false;		//There is the player's color before
+					}
+					else if (occupiedSpaces.get(row[j]) == getCurrentPlayer() && hasOthers) {
+						return true;		//We found a player color but also found the opposite color before this
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * 
 	 * @return
