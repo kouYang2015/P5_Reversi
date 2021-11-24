@@ -48,7 +48,6 @@ public class ReversiBoard implements Serializable{
 
 	
 	private void setupBoard() {
-		System.out.println("Setting up board");
 		for (int i = 0; i<64 ; i++) {
 			if (i == 27 || i == 28 || i == 35 || i == 36) {
 				continue;
@@ -59,7 +58,6 @@ public class ReversiBoard implements Serializable{
 		occupiedSpaces.put(28, Disks.BLACK);
 		occupiedSpaces.put(35, Disks.BLACK);
 		occupiedSpaces.put(36, Disks.WHITE);
-		System.out.println(occupiedSpaces.get(27));
 	}
 	
 	/**
@@ -161,8 +159,9 @@ public class ReversiBoard implements Serializable{
 							//System.out.println(row[i]);
 							for (int j = i+1; j < row.length; j++) { //Iterate forward from current position where if statement is true try to find
 //								System.out.println("Checking " + row[j] + " is empty?" + emptySpaces.contains(row[j]));
-//								boolean statement = (occupiedSpaces.get(j) == getCurrentPlayer());
-//								System.out.println("Checking " + row[j] + " has currentColor?" + statement);
+//								boolean statement = (occupiedSpaces.get(row[j]) == getCurrentPlayer());
+//								System.out.println(occupiedSpaces.get(row[j]));
+//								System.out.println("Checking " + row[j] + " is " + getCurrentPlayer() + statement);
 //								System.out.println(row[j] + " has color " + occupiedSpaces.get(row[j]));
 								if (emptySpaces.contains(row[j])) {
 									break;
@@ -173,7 +172,7 @@ public class ReversiBoard implements Serializable{
 								}
 							}
 						}
-						if (occupiedSpaces.get(row[i]) == getOppositePlayer() && emptySpaces.contains(row[i+1]) && !legalMoves.contains(row[i-1])) { //Found a nonempty index at i and next index is empty
+						if (occupiedSpaces.get(row[i]) == getOppositePlayer() && emptySpaces.contains(row[i+1]) && !legalMoves.contains(row[i+1])) { //Found a nonempty index at i and next index is empty
 							for (int j = i-1; j > 0; j--) { //Iterate backwards
 								//System.out.println("emptyIndex is " + row[j]);
 								if (emptySpaces.contains(row[j])) { 
@@ -189,12 +188,6 @@ public class ReversiBoard implements Serializable{
 				}
 			} // close for each array loop (8, 8, 22 loop)
 		} // close for rowEnum loop (3 loop)
-		// TODO: implement how we add indexes to legalMoves. Check each vertical,
-		// horizontal, diagonal array if it contains at least one
-		// currentPlayer color and then iterate through that array to see if any moves
-		// exists in it.
-		// A move exists if the there is an opposite color in between the current color
-		// and an empty index.
 		return legalMoves;
 	}
 	

@@ -10,7 +10,6 @@ class ReversiBoardTest {
 
 	@Test
 	void testConstruct() {
-		ReversiBoard rb2 = new ReversiBoard();
 		assertEquals(ReversiBoard.Disks.WHITE, rb.getOccupiedSpaces().get(27));
 		assertEquals(ReversiBoard.Disks.BLACK, rb.getOccupiedSpaces().get(28));
 		assertEquals(ReversiBoard.Disks.BLACK, rb.getOccupiedSpaces().get(35));
@@ -19,10 +18,10 @@ class ReversiBoardTest {
 		
 		assertEquals(ReversiBoard.Disks.BLACK, rb.getCurrentPlayer());
 		System.out.println(rb.findLegalMove());
-		assertTrue(rb.findLegalMove().contains(20));
-		assertTrue(rb.findLegalMove().contains(29));
-		assertTrue(rb.findLegalMove().contains(34));
-		assertTrue(rb.findLegalMove().contains(43));
+		assertTrue(rb.findLegalMove().contains(19));
+		assertTrue(rb.findLegalMove().contains(26));
+		assertTrue(rb.findLegalMove().contains(37));
+		assertTrue(rb.findLegalMove().contains(44));
 		 
 	}
 
