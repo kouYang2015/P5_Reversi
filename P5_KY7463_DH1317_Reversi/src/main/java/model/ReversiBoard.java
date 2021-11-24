@@ -261,7 +261,7 @@ public class ReversiBoard implements Serializable{
 				}
 			}
 		}
-		if (locIndex >= 0 && willFlipBackwards(row, loc, currentPlayer)) {
+		if (locIndex >= 0 && willFlipBackwards(row, locIndex, currentPlayer)) {
 			for (int negCur = locIndex; negCur > 1; negCur--) {
 				if (occupiedSpaces.get(row[negCur]) == getOppositePlayer()) {
 					occupiedSpaces.replace(row[negCur], getOppositePlayer(), currentPlayer);

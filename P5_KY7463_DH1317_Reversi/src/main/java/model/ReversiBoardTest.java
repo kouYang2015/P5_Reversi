@@ -22,7 +22,15 @@ class ReversiBoardTest {
 		assertTrue(rb.findLegalMove().contains(26));
 		assertTrue(rb.findLegalMove().contains(37));
 		assertTrue(rb.findLegalMove().contains(44));
-		 
+		rb.placeDisk(0);
+		assertEquals(1, rb.getTurn());
+		rb.placeDisk(19);
+		assertEquals(2, rb.getTurn());
+		assertEquals(ReversiBoard.Disks.BLACK, rb.getOccupiedSpaces().get(19));
+		assertEquals(ReversiBoard.Disks.BLACK, rb.getOccupiedSpaces().get(27));
+		assertEquals(ReversiBoard.Disks.BLACK, rb.getOccupiedSpaces().get(28));
+		assertEquals(ReversiBoard.Disks.BLACK, rb.getOccupiedSpaces().get(35));
+		assertEquals(ReversiBoard.Disks.WHITE, rb.getOccupiedSpaces().get(36));
 	}
 
 }
