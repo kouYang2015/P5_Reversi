@@ -48,13 +48,18 @@ public class ReversiBoard implements Serializable{
 
 	
 	private void setupBoard() {
+		System.out.println("Setting up board");
 		for (int i = 0; i<64 ; i++) {
+			if (i == 27 || i == 28 || i == 35 || i == 36) {
+				continue;
+			}
 			emptySpaces.add(i);
 		}
-		placeDisk(Disks.WHITE, 27);
-		placeDisk(Disks.BLACK, 28);
-		placeDisk(Disks.BLACK, 35);
-		placeDisk(Disks.WHITE, 36);
+		occupiedSpaces.put(27, Disks.WHITE);
+		occupiedSpaces.put(28, Disks.BLACK);
+		occupiedSpaces.put(35, Disks.BLACK);
+		occupiedSpaces.put(36, Disks.WHITE);
+		System.out.println(occupiedSpaces.get(27));
 	}
 	
 	/**
@@ -74,7 +79,7 @@ public class ReversiBoard implements Serializable{
 	}
 	
 	public Disks getCurrentPlayer () {
-		return turn % 2 == 0 ? Disks.BLACK : Disks.WHITE;
+		return turn % 2 == 0 ? Disks.WHITE : Disks.BLACK;
 	}
 	
 	private Disks getOppositePlayer() {
