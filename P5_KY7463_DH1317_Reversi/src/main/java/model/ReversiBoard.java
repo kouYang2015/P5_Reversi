@@ -242,49 +242,62 @@ public class ReversiBoard implements Serializable{
 		for (Rows rows : Rows.values()) {
 			for (var row : rows.rows) {
 				if (arrayContainsLoc(row, loc)) {
-					flipDisksInArray(row, loc, currentPlayer);
-					flipped = true;
+					flipped = flipDisksInArray(row, loc, currentPlayer);
 				}
 			}
 		}
 		return flipped;
 	}
 	
-	private void flipDisksInArray(int[] row, int loc, Disks currentPlayer) {
+	private boolean flipDisksInArray(int[] row, int loc, Disks currentPlayer) {
 		int locIndex = getLocInArray(row, loc);
+		boolean flipped = false;
+		//System.out.println(willFlipForward(row, locIndex, currentPlayer));
 		if (locIndex >= 0 && willFlipForward(row, locIndex, currentPlayer)) {
-			for (int posCur = locIndex; posCur < row.length; posCur++) {
+			for (int posCur = locIndex+1; posCur < row.length; posCur++) {
+				//System.out.println(occupiedSpaces.get(row[posCur]));
 				if (occupiedSpaces.get(row[posCur]) == getOppositePlayer()) {
 					occupiedSpaces.replace(row[posCur], getOppositePlayer(), currentPlayer);
+					flipped = true;
 				} else if (occupiedSpaces.get(row[posCur]) == getCurrentPlayer()) {
 					break;
 				}
 			}
 		}
 		if (locIndex >= 0 && willFlipBackwards(row, locIndex, currentPlayer)) {
-			for (int negCur = locIndex; negCur > 1; negCur--) {
+			for (int negCur = locIndex-1; negCur > 1; negCur--) {
 				if (occupiedSpaces.get(row[negCur]) == getOppositePlayer()) {
 					occupiedSpaces.replace(row[negCur], getOppositePlayer(), currentPlayer);
+					flipped = true;
 				} else if (occupiedSpaces.get(row[negCur]) == getCurrentPlayer()) {
 					break;
 				}
 			}
 		}
+		return flipped;
 	}
 
 	private boolean willFlipForward(int[] row, int locIndex, Disks currentPlayer) {
 		boolean hasOthers = false;
+//		System.out.println();
+//		for (int k = 0; k < row.length; k++) {
+//			System.out.print(row[k] + ",");
+//		}
+//		System.out.println();
 		for (int i = locIndex; i < row.length; i++) {
 			if (occupiedSpaces.get(row[i]) == currentPlayer) {
 				for (int j = i+1; j < row.length; j++) { //Iterate forward from current position where if statement is true try to find
+//					System.out.print(row[j] + " is " + occupiedSpaces.get(row[j]) + " ");
+//					System.out.println("hasOthers is " + hasOthers);
 					if (occupiedSpaces.get(row[j]) == getOppositePlayer()) {
 						hasOthers = true;
 					}
-					else if (occupiedSpaces.get(row[j]) == getCurrentPlayer()) {
-						return false;
-					}
 					else if (occupiedSpaces.get(row[j]) == getCurrentPlayer() && hasOthers) {
+						//System.out.println("Found true");
 						return true;
+					}
+					else if (occupiedSpaces.get(row[j]) == getCurrentPlayer() && !hasOthers) {
+						return false;
 					}
 				}
 			}
@@ -297,14 +310,15 @@ public class ReversiBoard implements Serializable{
 		for (int i = locIndex; i > 0; i--) {
 			if (occupiedSpaces.get(row[i]) == currentPlayer) {
 				for (int j = i-1; j > 0; j--) { //Iterate backward from current position where if statement is true try to find
+					//System.out.println(occupiedSpaces.get(row[j]));
 					if (occupiedSpaces.get(row[j]) == getOppositePlayer()) {
 						hasOthers = true;	//There is the opposite color before
 					}
-					else if (occupiedSpaces.get(row[j]) == getCurrentPlayer()) {
-						return false;		//There is the player's color before
-					}
 					else if (occupiedSpaces.get(row[j]) == getCurrentPlayer() && hasOthers) {
 						return true;		//We found a player color but also found the opposite color before this
+					}
+					else if (occupiedSpaces.get(row[j]) == getCurrentPlayer() && !hasOthers) {
+						return false;		//There is the player's color before
 					}
 				}
 			}
