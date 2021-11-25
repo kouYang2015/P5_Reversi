@@ -4,6 +4,8 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+import model.ReversiBoard;
+
 /**
  * Application Lifecycle Listener implementation class SessionListener
  *
@@ -22,7 +24,7 @@ public class SessionListener implements HttpSessionListener {
      * @see HttpSessionListener#sessionCreated(HttpSessionEvent)
      */
     public void sessionCreated(HttpSessionEvent se)  { 
-         // TODO Auto-generated method stub
+         se.getSession().setAttribute("game", new ReversiBoard());
     }
 
 	/**

@@ -123,7 +123,7 @@ public class ReversiBoard implements Serializable{
 	 * 
 	 * @param {int[]} rowArray
 	 */
-	public boolean arrayContainsCurrentPlayer(int[] rowArray){
+	private boolean arrayContainsCurrentPlayer(int[] rowArray){
 		for (int i = 0; i < rowArray.length; i++) {
 			if (occupiedSpaces.get(rowArray[i]) == getCurrentPlayer()) {
 				return true;
@@ -139,7 +139,7 @@ public class ReversiBoard implements Serializable{
 	 * @param {int[]} rowArray
 	 * @param {int} loc
 	 */
-	public boolean arrayContainsLoc(int[] rowArray, int loc) {
+	private boolean arrayContainsLoc(int[] rowArray, int loc) {
 		for (int i = 0; i < rowArray.length; i++) {
 			if (rowArray[i] == loc) {
 				return true;
@@ -172,7 +172,7 @@ public class ReversiBoard implements Serializable{
 	 * 
 	 * @param {int[]} rowArray
 	 */
-	public boolean arrayContainsEmpty(int[] rowArray) {
+	private boolean arrayContainsEmpty(int[] rowArray) {
 		for (int i = 0; i < rowArray.length; i++) {
 			if (emptySpaces.contains(rowArray[i])) {
 				return true;
