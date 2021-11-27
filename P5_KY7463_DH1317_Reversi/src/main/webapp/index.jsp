@@ -63,6 +63,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		<div class="board">
 	  		<table class="spaces">
 	  			<tr>
+	  				<td>
+	  					<%-- <c:choose>
+	  						<c:when test="${ }"> </c:when>
+	  						<c:when test="${ }"> </c:when>
+	  						<c:otherwise></c:otherwise>
+	  					</c:choose>
+	  					--%>
+	  					
+	  				</td>
 	  				<td></td>
 	  				<td></td>
 	  				<td></td>
@@ -70,8 +79,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  				<td></td>
 	  				<td></td>
 	  				<td></td>
-	  				<td></td>
-	  				
 	  			</tr>
 	  			<tr>
 	  				<td></td>
