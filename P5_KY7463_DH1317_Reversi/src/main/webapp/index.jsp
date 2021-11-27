@@ -65,8 +65,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  			<tr>
 	  				<td>
 	  					<%-- <c:choose>
-	  						<c:when test="${ }"> </c:when>
-	  						<c:when test="${ }"> </c:when>
+	  						<c:when test="${}"> </c:when>
+	  						<c:when test="${}"> </c:when>
+	  						<c:when test="${}"> </c:when>
 	  						<c:otherwise></c:otherwise>
 	  					</c:choose>
 	  					--%>
