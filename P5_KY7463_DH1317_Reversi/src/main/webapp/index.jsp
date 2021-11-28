@@ -80,11 +80,29 @@ h1 {
 	width: 50%;
 }
 
-.playerTable{
+.playerTable, tr, td{
 	margin: auto;
-	width: 50%;
+	width: 300px;
 	text-align: center;
+	height: 100px;
 
+}
+.newGame{
+	background-color: rgb(0, 128, 64); 
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    
+
+}
+.newGameContainer{
+	margin: auto;
+	text-align: center;
+	padding: 20px;
 }
 </style>
 </head>
@@ -115,7 +133,7 @@ h1 {
 			</tr>
 		</table>
 	</div>
-	
+	<div>
 		<h1>Turn</h1>
 		<table class="playerTable">
 			
@@ -125,11 +143,13 @@ h1 {
 							<td>
 								<img class="disk" src="images/blackDisk.png" />
 								<h3>Blacks Turn</h3>
+								<h4>Score: <c:out value="${game.countBlack()}"/></h4>
 							</td>
 							
 							<td>
 								<img class="disk" src="images/whiteDisk.png" />
-								<h3>X</h3>
+								<h3>-</h3>
+								<h4>Score: <c:out value="${game.countWhite()}"/></h4>
 							</td>
 						</tr>
 					</c:when>
@@ -138,18 +158,26 @@ h1 {
 						<tr>
 							<td>
 								<img class="disk" src="images/blackDisk.png" />
-								<h3>X</h3>
+								<h3>-</h3>
+								<h4>Score: <c:out value="${game.countBlack()}"/></h4>
 							</td>
 							
 							<td>
 								<img class="disk" src="images/whiteDisk.png" />
 								<h3>Whites Turn</h3>
+								<h4>Score: <c:out value="${game.countWhite()}"/></h4>
 							</td>
 						</tr>
 					
 					</c:when>
 				</c:choose>
 		</table>
+	</div>
+	<div class="newGameContainer">
+		<form  action="ReversiServlet">
+			<button class="newGame" type="submit" name="quit">New Game!</button>
+		</form>
+	</div>
 
 </body>
 </html>

@@ -420,7 +420,7 @@ public class ReversiBoard implements Serializable{
 	 */
 	public int countBlack() {
 		int blackCount = 0;
-		for (int i = 0; i < occupiedSpaces.size(); i++) {
+		for (int i = 0; i < 64; i++) {
 			if (occupiedSpaces.get(i) == Disk.BLACK) {
 				blackCount++;
 			}
@@ -436,7 +436,7 @@ public class ReversiBoard implements Serializable{
 	 */
 	public int countWhite() {
 		int whiteCount = 0;
-		for (int i = 0; i < occupiedSpaces.size(); i++) {
+		for (int i = 0; i < 64; i++) {
 			if (occupiedSpaces.get(i) == Disk.WHITE) {
 				whiteCount++;
 			}

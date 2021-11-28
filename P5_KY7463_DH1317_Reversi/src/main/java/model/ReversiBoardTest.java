@@ -54,12 +54,7 @@ class ReversiBoardTest {
 		assertFalse(rb.findLegalMove().contains(20));
 		assertFalse(rb.findLegalMove().contains(29));
 		assertFalse(rb.findLegalMove().contains(49));
+		System.out.print(rb.countBlack());
+		System.out.print(rb.countWhite());
 	}
-	
-	
-		
-	
-	
-	
-
 }
