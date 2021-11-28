@@ -18,7 +18,7 @@ public class ReversiBoard implements Serializable{
 					{ 48, 49, 50, 51, 52, 53, 54, 55}, {56, 57, 58, 59, 60, 61, 62, 63}}),
 		
 		VERTICAL (new int[][] {{0,8,16,24,32,40,48,56}, {1,9,17,25,33,41,49,57}, {2,10,18,26,34,42,50,58},{3,11,19,27,35,43,51,59},
-					{4,12,20,28,36,44,52,61}, {5,13,21,29,37,45,53,61}, {6,14,22,30,38,46,54,62}, {7,15,23,31,39,47,55,63}}),
+					{4,12,20,28,36,44,52,60}, {5,13,21,29,37,45,53,61}, {6,14,22,30,38,46,54,62}, {7,15,23,31,39,47,55,63}}),
 		
 		DIAGONAL (new int[][] {{40,49,58}, {32,41,50,59}, {24,33,42,51,60}, {16,25,34,43,52,61}, {8,17,26,35,44,53,62}, 
 				{0,9,18,27,36,45,54,63}, {1,10,19,28,37,46,55}, {2,11,20,29,38,47}, {3,12,21,30,39}, {4,13,22,31}, {5,14,23}, {47,54,61},
@@ -289,6 +289,7 @@ public class ReversiBoard implements Serializable{
 	 */
 	private boolean flipDisks(Disk currentPlayer, int loc) {
 		boolean flipped = false;
+		System.out.println("New disk at " + loc);
 		for (Rows rows : Rows.values()) {
 			for (var row : rows.rows) {
 				if (arrayContainsLoc(row, loc)) {
@@ -308,10 +309,12 @@ public class ReversiBoard implements Serializable{
 	 * @param {Disks} currentPlayer
 	 */
 	private boolean flipDisksInArray(int[] row, int loc, Disk currentPlayer) {
+		System.out.println();
 		int locIndex = getLocInArray(row, loc);
 		boolean flipped = false;
 		//System.out.println(willFlipForward(row, locIndex, currentPlayer));
 		if (locIndex >= 0 && willFlipForward(row, locIndex, currentPlayer)) {
+			System.out.println("Going forward: " + locIndex);
 			for (int posCur = locIndex+1; posCur < row.length; posCur++) {
 				//System.out.println(occupiedSpaces.get(row[posCur]));
 				if (occupiedSpaces.get(row[posCur]) == getOppositePlayer()) {
@@ -323,7 +326,13 @@ public class ReversiBoard implements Serializable{
 			}
 		}
 		if (locIndex >= 0 && willFlipBackwards(row, locIndex, currentPlayer)) {
-			for (int negCur = locIndex-1; negCur > 1; negCur--) {
+			System.out.println("Going back: " + locIndex);
+			for (int i = 0; i<row.length; i++) {
+				System.out.println(row[i] + " , ");
+			}
+			System.out.println();
+			for (int negCur = locIndex-1; negCur > 0; negCur--) {
+				System.out.println(row[negCur] + " has " + getOppositePlayer() + " ? " + (occupiedSpaces.get(row[negCur]) == getOppositePlayer()));
 				if (occupiedSpaces.get(row[negCur]) == getOppositePlayer()) {
 					occupiedSpaces.replace(row[negCur], getOppositePlayer(), currentPlayer);
 					flipped = true;
