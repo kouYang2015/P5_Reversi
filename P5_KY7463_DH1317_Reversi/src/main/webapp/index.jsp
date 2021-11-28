@@ -43,6 +43,7 @@ h1 {
 .spaces {
 	width: 800px;
 	height: 725px;
+	max-height: 725px;
 	text-align: center;
 }
 
@@ -104,6 +105,10 @@ h1 {
 	text-align: center;
 	padding: 20px;
 }
+
+.winner{
+	text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF;
+}
 </style>
 </head>
 <body>
@@ -134,9 +139,23 @@ h1 {
 		</table>
 	</div>
 	<div>
-		<h1>Turn</h1>
+
+	
+	
+	
+	<c:choose>
+		<c:when test="${game.isOver() == true}"> 
+			<c:choose>
+				<c:when test="${game.getWinner() eq 'WHITE'}"><h1 class="winner">White Wins</h1> </c:when>
+				<c:when test="${game.getWinner() eq 'BLACK'}"><h1 class="winner">Black Wins </h1> </c:when>
+				<c:when test="${game.getWinner() == null}"><h1 class="winner">Its A Tie</h1> </c:when>
+			</c:choose>
+		</c:when>
+		<c:otherwise><h1>Turn</h1></c:otherwise>
+	</c:choose>
+
+		
 		<table class="playerTable">
-			
 				<c:choose>
 					<c:when test="${game.getCurrentPlayer() eq 'BLACK' }">
 						<tr>
@@ -178,6 +197,7 @@ h1 {
 			<button class="newGame" type="submit" name="quit">New Game!</button>
 		</form>
 	</div>
+	
 
 </body>
 </html>
