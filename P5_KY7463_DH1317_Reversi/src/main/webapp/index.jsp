@@ -49,8 +49,10 @@ h1 {
 .spaces tr, .spaces td {
 	border: 1px solid black;
 	padding: 5px;
-	width: 80px;
-	height: 80px;
+	max-width: 80px;
+	max-height: 80px;
+	min-width: 80px;
+	min-height: 80px;
 }
 
 .disk {
@@ -64,6 +66,7 @@ h1 {
 	width: 75px;
 	height: 75px;
 }
+
 
 .formButton {
 	opacity: 0.35;
@@ -88,7 +91,7 @@ h1 {
 							</c:when>
 							<c:when test="${game.findLegalMove().contains((stat.index).intValue())}">
 								<form action="ReversiServlet">
-									<button type="submit" name="loc" value="${stat.index}">
+									<button class="formButton" type="submit" name="loc" value="${stat.index}">
 										<img class="legalMove" src="images/whiteDisk.png" />
 									</button>
 								</form>
