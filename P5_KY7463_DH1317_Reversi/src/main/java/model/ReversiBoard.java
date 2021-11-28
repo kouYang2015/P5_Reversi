@@ -8,7 +8,7 @@ public class ReversiBoard implements Serializable{
 	private static final long serialVersionUID = 20211103001L;
 	static final int NUM_SPACES = 64;
 	private int turn;
-	private HashMap<Integer, Disks> occupiedSpaces;
+	private HashMap<Integer, Disk> occupiedSpaces;
 	private ArrayList<Integer> emptySpaces;
 	
 	
@@ -33,17 +33,11 @@ public class ReversiBoard implements Serializable{
 		
 	}
 	
-	
-	enum Disks{
-		WHITE, BLACK;
-	}
-	
-	
 	/**
 	 * No-arg constructor
 	 */
 	public ReversiBoard() {
-		occupiedSpaces = new HashMap<Integer, Disks>();
+		occupiedSpaces = new HashMap<Integer, Disk>();
 		emptySpaces = new ArrayList<Integer>();
 		turn = 1;
 		setupBoard();
@@ -60,10 +54,10 @@ public class ReversiBoard implements Serializable{
 			}
 			emptySpaces.add(i);
 		}
-		occupiedSpaces.put(27, Disks.WHITE);
-		occupiedSpaces.put(28, Disks.BLACK);
-		occupiedSpaces.put(35, Disks.BLACK);
-		occupiedSpaces.put(36, Disks.WHITE);
+		occupiedSpaces.put(27, Disk.WHITE);
+		occupiedSpaces.put(28, Disk.BLACK);
+		occupiedSpaces.put(35, Disk.BLACK);
+		occupiedSpaces.put(36, Disk.WHITE);
 	}
 	
 	
@@ -80,24 +74,24 @@ public class ReversiBoard implements Serializable{
 	 * @return the occupiedSpaces
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<Integer, Disks> getOccupiedSpaces() {
-		return (HashMap<Integer, Disks>) occupiedSpaces.clone();
+	public HashMap<Integer, Disk> getOccupiedSpaces() {
+		return (HashMap<Integer, Disk>) occupiedSpaces.clone();
 	}
 	
 	
 	/*
 	 * @return the current player based off of turn count
 	 */
-	public Disks getCurrentPlayer () {
-		return turn % 2 == 0 ? Disks.WHITE : Disks.BLACK;
+	public Disk getCurrentPlayer () {
+		return turn % 2 == 0 ? Disk.WHITE : Disk.BLACK;
 	}
 	
 	
 	/*
 	 * @return the opposite player based off of the current player
 	 */
-	private Disks getOppositePlayer() {
-		return getCurrentPlayer() == Disks.BLACK ? Disks.WHITE : Disks.BLACK;
+	private Disk getOppositePlayer() {
+		return getCurrentPlayer() == Disk.BLACK ? Disk.WHITE : Disk.BLACK;
 	}
 	
 	/*
@@ -262,7 +256,7 @@ public class ReversiBoard implements Serializable{
 	 * @param {Disks} currentPlayer
 	 * @param {int} loc
 	 */
-	private boolean placeDisk(Disks currentPlayer, int loc) {
+	private boolean placeDisk(Disk currentPlayer, int loc) {
 		if (isValidMove(loc)) {
 			occupiedSpaces.put(loc, currentPlayer);			//Place into hashmap our new disk
 			emptySpaces.remove(emptySpaces.indexOf(loc));	//Remove from emptySpaces the loc using removeEmptySpace method
@@ -293,7 +287,7 @@ public class ReversiBoard implements Serializable{
 	 * @param loc the specified board location
 	 * @param currentPlayer current player as specified by the turn
 	 */
-	private boolean flipDisks(Disks currentPlayer, int loc) {
+	private boolean flipDisks(Disk currentPlayer, int loc) {
 		boolean flipped = false;
 		for (Rows rows : Rows.values()) {
 			for (var row : rows.rows) {
@@ -313,7 +307,7 @@ public class ReversiBoard implements Serializable{
 	 * @param {int} loc
 	 * @param {Disks} currentPlayer
 	 */
-	private boolean flipDisksInArray(int[] row, int loc, Disks currentPlayer) {
+	private boolean flipDisksInArray(int[] row, int loc, Disk currentPlayer) {
 		int locIndex = getLocInArray(row, loc);
 		boolean flipped = false;
 		//System.out.println(willFlipForward(row, locIndex, currentPlayer));
@@ -350,7 +344,7 @@ public class ReversiBoard implements Serializable{
 	 * @param {int} locIndex
 	 * @param {Disks} currentPlayer
 	 */
-	private boolean willFlipForward(int[] row, int locIndex, Disks currentPlayer) {
+	private boolean willFlipForward(int[] row, int locIndex, Disk currentPlayer) {
 		boolean hasOthers = false;
 //		System.out.println();
 //		for (int k = 0; k < row.length; k++) {
@@ -387,7 +381,7 @@ public class ReversiBoard implements Serializable{
 	 * @param {int} locIndex
 	 * @param {Disks} currentPlayer
 	 */
-	private boolean willFlipBackwards(int[] row, int locIndex, Disks currentPlayer) {
+	private boolean willFlipBackwards(int[] row, int locIndex, Disk currentPlayer) {
 		boolean hasOthers = false;
 		for (int i = locIndex; i > 0; i--) {
 			if (occupiedSpaces.get(row[i]) == currentPlayer) {
@@ -418,7 +412,7 @@ public class ReversiBoard implements Serializable{
 	public int countBlack() {
 		int blackCount = 0;
 		for (int i = 0; i < occupiedSpaces.size(); i++) {
-			if (occupiedSpaces.get(i) == Disks.BLACK) {
+			if (occupiedSpaces.get(i) == Disk.BLACK) {
 				blackCount++;
 			}
 		}
@@ -434,7 +428,7 @@ public class ReversiBoard implements Serializable{
 	public int countWhite() {
 		int whiteCount = 0;
 		for (int i = 0; i < occupiedSpaces.size(); i++) {
-			if (occupiedSpaces.get(i) == Disks.WHITE) {
+			if (occupiedSpaces.get(i) == Disk.WHITE) {
 				whiteCount++;
 			}
 		}
@@ -448,11 +442,11 @@ public class ReversiBoard implements Serializable{
 	 * 			Disk.WHITE: If white has more disks occupying the spaces than black.
 	 * 			Disk.BLACK: If black has more disks occupying the spaces than white.
 	 */
-	public Disks getWinner() {
+	public Disk getWinner() {
 		if (isOver() && countBlack() == countWhite()) { //This means we have a tie.
 			return null;
 		}
-		return isOver() && (countBlack() < countWhite()) ? Disks.WHITE : Disks.BLACK; //TODO: check if isOver() works with < conditional
+		return isOver() && (countBlack() < countWhite()) ? Disk.WHITE : Disk.BLACK; //TODO: check if isOver() works with < conditional
 	}
 	
 	
