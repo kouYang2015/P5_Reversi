@@ -55,7 +55,7 @@ public class ReversiServlet extends HttpServlet {
 			((ReversiBoard) request.getSession(true).getAttribute("game")).placeDisk(locInt);
 		}
 		
-		//4. Store info -- n/a
+		//4. Store info -- n/a All info saved on session.
 		
 		//5. Forward Control
 		request.getRequestDispatcher("/index.jsp").forward(request, response);
