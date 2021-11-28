@@ -11,7 +11,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 <html>
 <head>
 <base href="<%=basePath%>">
-
+<link href="styles.css" rel="stylesheet">
 
 <title>Reversi</title>
 <meta http-equiv="pragma" content="no-cache">
@@ -19,105 +19,9 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 <meta http-equiv="expires" content="0">
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
-<style>
-table {
-	height: 600px;
-	width: 600px;
-}
 
-body {
-	background-color: rgb(255, 156, 119);
-}
-
-h1 {
-	text-align: center;
-}
-
-.board {
-	background-color: rgb(0, 128, 64);
-	min-height: 820px;
-	max-height: 820px;
-	width: 800px;
-	margin: 0 auto;
-}
-
-.spaces {
-	width: 800px;
-	height: 725px;
-	max-height: 725px;
-	text-align: center;
-	align-items: center;
-}
-
-.spaces tr, .spaces td {
-	border: 1px solid black;
-	padding: 5px;
-	max-width: 80px;
-	max-height: 80px;
-	
-	
-}
-
-.disk {
-	border-radius: 50%;
-	width: 75px;
-	height: 75px;
-}
-
-.legalMove {
-	border-radius: 50%;
-	width: 70px;
-	height: 70px;
-}
-
-.form{
-	align-items: center;
-}
-.formButton {
-	opacity: 0.35;
-	border-radius: 55%;
-	width: 70px;
-	height: 70px;
-	top: 50%;
-	
-}
-
-.player{
-	text-align: center;
-	margin: auto;
-	width: 50%;
-}
-
-.playerTable, tr, td{
-	margin: auto;
-	width: 300px;
-	text-align: center;
-	height: 100px;
-
-}
-.newGame{
-	background-color: rgb(0, 128, 64); 
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    
-
-}
-.newGameContainer{
-	margin: auto;
-	text-align: center;
-	padding: 20px;
-}
-
-.winner{
-	text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF;
-}
-</style>
 </head>
+
 <body>
 	<h1>Reversi</h1>
 	<div class="board">
