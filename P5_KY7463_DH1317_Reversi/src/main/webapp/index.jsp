@@ -35,7 +35,8 @@ h1 {
 
 .board {
 	background-color: rgb(0, 128, 64);
-	height: 725px;
+	min-height: 820px;
+	max-height: 820px;
 	width: 800px;
 	margin: 0 auto;
 }
@@ -45,13 +46,15 @@ h1 {
 	height: 725px;
 	max-height: 725px;
 	text-align: center;
+	align-items: center;
 }
 
 .spaces tr, .spaces td {
 	border: 1px solid black;
 	padding: 5px;
-	width: 80px;
-	height: 80px;
+	max-width: 80px;
+	max-height: 80px;
+	
 	
 }
 
@@ -63,16 +66,20 @@ h1 {
 
 .legalMove {
 	border-radius: 50%;
-	width: 75px;
-	height: 75px;
+	width: 70px;
+	height: 70px;
 }
 
-
+.form{
+	align-items: center;
+}
 .formButton {
 	opacity: 0.35;
-	border-radius: 50%;
-	width: 75px;
-	height: 75px;
+	border-radius: 55%;
+	width: 70px;
+	height: 70px;
+	top: 50%;
+	
 }
 
 .player{
@@ -125,15 +132,19 @@ h1 {
 								<img class="disk" src="images/whiteDisk.png" />
 							</c:when>
 							<c:when test="${game.findLegalMove().contains((stat.index).intValue())}">
-								<form action="ReversiServlet">
+								<form class="form" action="ReversiServlet">
 									<button class="formButton" type="submit" name="loc" value="${stat.index}">
 										<img class="legalMove" src="images/yellowDisk.png" />
 									</button>
 								</form>
 							</c:when>
-							<c:otherwise>${stat.index}</c:otherwise>
+							<c:otherwise></c:otherwise>
 						</c:choose></td>
-					<c:if test="${stat.count % 8 == 0 }"> </tr> <tr> </c:if>
+						
+					<c:choose>
+						<c:when test="${stat.count == 64 }"></c:when>
+						<c:when test="${stat.count % 8 == 0 }"> </tr> <tr> </c:when>
+					</c:choose>	
 				</c:forEach>
 			</tr>
 		</table>
