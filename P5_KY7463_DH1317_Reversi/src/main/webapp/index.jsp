@@ -12,6 +12,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 <head>
 <base href="<%=basePath%>">
 
+
 <title>Reversi</title>
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
@@ -20,7 +21,6 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 <meta http-equiv="description" content="This is my page">
 <style>
 table {
-	border: 1px solid black;
 	height: 600px;
 	width: 600px;
 }
@@ -35,24 +35,23 @@ h1 {
 
 .board {
 	background-color: rgb(0, 128, 64);
-	height: 800px;
+	height: 725px;
 	width: 800px;
 	margin: 0 auto;
 }
 
 .spaces {
-	width: 100%;
-	height: 100%;
+	width: 800px;
+	height: 725px;
 	text-align: center;
 }
 
 .spaces tr, .spaces td {
 	border: 1px solid black;
 	padding: 5px;
-	max-width: 80px;
-	max-height: 80px;
-	min-width: 80px;
-	min-height: 80px;
+	width: 80px;
+	height: 80px;
+	
 }
 
 .disk {
@@ -74,6 +73,19 @@ h1 {
 	width: 75px;
 	height: 75px;
 }
+
+.player{
+	text-align: center;
+	margin: auto;
+	width: 50%;
+}
+
+.playerTable{
+	margin: auto;
+	width: 50%;
+	text-align: center;
+
+}
 </style>
 </head>
 <body>
@@ -92,7 +104,7 @@ h1 {
 							<c:when test="${game.findLegalMove().contains((stat.index).intValue())}">
 								<form action="ReversiServlet">
 									<button class="formButton" type="submit" name="loc" value="${stat.index}">
-										<img class="legalMove" src="images/whiteDisk.png" />
+										<img class="legalMove" src="images/yellowDisk.png" />
 									</button>
 								</form>
 							</c:when>
@@ -103,5 +115,41 @@ h1 {
 			</tr>
 		</table>
 	</div>
+	
+		<h1>Turn</h1>
+		<table class="playerTable">
+			
+				<c:choose>
+					<c:when test="${game.getCurrentPlayer() eq 'BLACK' }">
+						<tr>
+							<td>
+								<img class="disk" src="images/blackDisk.png" />
+								<h3>Blacks Turn</h3>
+							</td>
+							
+							<td>
+								<img class="disk" src="images/whiteDisk.png" />
+								<h3>X</h3>
+							</td>
+						</tr>
+					</c:when>
+					
+					<c:when test="${game.getCurrentPlayer() eq 'WHITE' }">
+						<tr>
+							<td>
+								<img class="disk" src="images/blackDisk.png" />
+								<h3>X</h3>
+							</td>
+							
+							<td>
+								<img class="disk" src="images/whiteDisk.png" />
+								<h3>Whites Turn</h3>
+							</td>
+						</tr>
+					
+					</c:when>
+				</c:choose>
+		</table>
+
 </body>
 </html>
