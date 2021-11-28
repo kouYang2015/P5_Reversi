@@ -455,7 +455,7 @@ public class ReversiBoard implements Serializable{
 		if (isOver() && countBlack() == countWhite()) { //This means we have a tie.
 			return null;
 		}
-		return isOver() && (countBlack() < countWhite()) ? Disk.WHITE : Disk.BLACK; //TODO: check if isOver() works with < conditional
+		return isOver() && (countBlack() < countWhite()) ? Disk.WHITE : Disk.BLACK;
 	}
 	
 	
