@@ -98,7 +98,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 		</c:choose>
 
 
-		<table class="playerTable">
+		<table class="infoTable">
 			<c:choose>
 				<c:when test="${game.getCurrentPlayer() eq 'BLACK'}">
 					<tr>
@@ -129,9 +129,8 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 			</c:choose>
 		</table>
 	</div>
-
 	<div class="newGameContainer">
-		<table>
+		<table class="infoTable">
 			<td>
 				<form action="ReversiServlet">
 					<button class="newGame" type="submit" name="helpBlack" value="true">Toggle

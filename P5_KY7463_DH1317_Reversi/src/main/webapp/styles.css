@@ -77,13 +77,14 @@ h1 {
 	width: 50%;
 }
 
-.playerTable, tr, td{
+.infoTable, tr, td{
 	margin: auto;
 	width: 300px;
 	text-align: center;
 	height: 100px;
 
 }
+
 .newGame{
 	background-color: rgb(0, 128, 64); 
     border: none;
@@ -93,9 +94,8 @@ h1 {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    
-
 }
+
 .newGameContainer{
 	margin: auto;
 	text-align: center;
