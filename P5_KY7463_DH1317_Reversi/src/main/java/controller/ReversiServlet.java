@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -63,6 +62,8 @@ public class ReversiServlet extends HttpServlet {
 		if (quitGame != null) {
 			//3. Do it - Start a new game
 			request.getSession(true).setAttribute("game", new ReversiBoard());
+			request.getSession(true).setAttribute("helpWhite", false);
+			request.getSession(true).setAttribute("helpBlack", false);
 		}
 		else if (Boolean.parseBoolean(helpWhiteButton)) {
 			//3. Do it - Enables/Disables helper images on the jsp by setting the session attribute to opposite of itself.

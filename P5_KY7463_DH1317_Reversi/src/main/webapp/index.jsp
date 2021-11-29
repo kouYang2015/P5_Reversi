@@ -39,7 +39,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 							</c:when>
 							<c:when
 								test="${game.findLegalMove().contains((stat.index).intValue())}">
-								<form class="form" action="ReversiServlet">
+								<form class="form" action="ReversiServlet" method="post">
 									<c:choose>
 										<c:when
 											test="${game.getCurrentPlayer() eq 'BLACK' && sessionScope.helpBlack eq true}">
@@ -63,20 +63,15 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 								</form>
 							</c:when>
 							<c:otherwise></c:otherwise>
-						</c:choose></td>
-
-					<c:choose>
-						<c:when test="${stat.count == 64 }"></c:when>
-						<c:when test="${stat.count % 8 == 0 }">
-			</tr>
-			<tr>
-				</c:when>
-				</c:choose>
+						</c:choose>
+					</td>
+						<c:choose>
+							<c:when test="${stat.count % 8 == 0 }"></tr></c:when>
+						</c:choose>
 				</c:forEach>
-			</tr>
 		</table>
 	</div>
-	
+
 	<div>
 		<c:choose>
 			<c:when test="${game.isOver() == true}">
@@ -129,26 +124,28 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 			</c:choose>
 		</table>
 	</div>
-	<div class="newGameContainer">
+	<div class="optionsContainer">
 		<table class="infoTable">
-			<td>
-				<form action="ReversiServlet">
-					<button class="newGame" type="submit" name="helpBlack" value="true">Toggle
-						Black Helper</button>
-				</form>
-			</td>
-			<td>
-				<form action="ReversiServlet">
-					<button class="newGame" type="submit" name="quit">New
-						Game!</button>
-				</form>
-			</td>
-			<td>
-				<form action="ReversiServlet">
-					<button class="newGame" type="submit" name="helpWhite" value="true">Toggle
-						White Helper</button>
-				</form>
-			</td>
+			<tr>
+				<td>
+					<form action="ReversiServlet" method="post">
+						<button class="optionsButton" type="submit" name="helpBlack"
+							value="true">Toggle Black Helper</button>
+					</form>
+				</td>
+				<td>
+					<form action="ReversiServlet" method="post">
+						<button class="optionsButton" type="submit" name="quit">New
+							Game!</button>
+					</form>
+				</td>
+				<td>
+					<form action="ReversiServlet" method="post">
+						<button class="optionsButton" type="submit" name="helpWhite"
+							value="true">Toggle White Helper</button>
+					</form>
+				</td>
+			</tr>
 		</table>
 	</div>
 
