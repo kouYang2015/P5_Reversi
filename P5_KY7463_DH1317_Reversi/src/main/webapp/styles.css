@@ -60,6 +60,17 @@ h1 {
 	
 }
 
+.emptyFormButton{
+	background-color: transparent;
+    background-repeat: no-repeat;
+    overflow: hidden;
+	border: none;
+	outline: none;
+	width: 70px;
+	height: 70px;
+	top: 50%;
+}
+
 .player{
 	text-align: center;
 	margin: auto;

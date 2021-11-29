@@ -40,18 +40,41 @@ public class ReversiServlet extends HttpServlet {
 		processRequest(request, response);
 	}
 	
+	/**
+	 * Processes the incoming button requests from the session. If quitGame button is clicked, a new session will start.
+	 * If the helpBlackButton is clicked, then the session attribute "helpBlack" will be the anti-boolean of its current value.
+	 * If the helpWhiteButton is clicked, then the session attribute "helpWhite" will be the anti-boolean of its current value.
+	 * If a location on the board is clicked, then it will call the game's placeDisk() method.
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//1. Get Data
 		String locRec = request.getParameter("loc");
 		String quitGame = request.getParameter("quit");
+		String helpBlackButton = request.getParameter("helpBlack");
+		String helpWhiteButton = request.getParameter("helpWhite");
+		boolean helpBlackSessionValue = (boolean) request.getSession(true).getAttribute("helpBlack");
+		boolean helpWhiteSessionValue = (boolean) request.getSession(true).getAttribute("helpWhite");
 		
 		//2. Validate
 		if (quitGame != null) {
+			//3. Do it - Start a new game
 			request.getSession(true).setAttribute("game", new ReversiBoard());
+		}
+		else if (Boolean.parseBoolean(helpWhiteButton)) {
+			//3. Do it - Enables/Disables helper images on the jsp by setting the session attribute to opposite of itself.
+			request.getSession(true).setAttribute("helpWhite", !helpWhiteSessionValue);
+		}
+		else if (Boolean.parseBoolean(helpBlackButton)) {
+			//3. Do it - Enables/Disables helper images on the jsp by setting the session attribute to opposite of itself.
+			request.getSession(true).setAttribute("helpBlack", !helpBlackSessionValue);
 		}
 		else if (locRec != null && (locRec.matches("[0-5]?[0-9]") || locRec.matches("[6]?[0-3]"))) {
 			int locInt = Integer.parseInt(locRec);
-			//3. Do it
+			//3. Do it - Place a new disk at the locInt on the board.
 			((ReversiBoard) request.getSession(true).getAttribute("game")).placeDisk(locInt);
 		}
 		
