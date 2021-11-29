@@ -1,3 +1,13 @@
+/**
+ * 
+ * @author Kou Yang & Dominic Hannah
+ * ICS 425 - Ralph Foy
+ * Assignment P5 - Reversi
+ * Date: 11/28/2021
+ * This class holds the CSS styles used in the index.jsp.
+ *
+ */
+
 table {
 	height: 600px;
 	width: 600px;

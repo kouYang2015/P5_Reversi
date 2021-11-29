@@ -4,6 +4,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * 
+ * @author Kou Yang & Dominic Hannah
+ * ICS 425 - Ralph Foy
+ * Assignment P5 - Reversi
+ * Date: 11/28/2021
+ * This class represents the ReversiBoard Bean used to implment all functionalities of the logic in the game for placing a disk,
+ * capturing/flipping disks, finding all the possible moves for the current player, counting disks, and getting the winner
+ * when the game is over.
+ *
+ */
+
 public class ReversiBoard implements Serializable{
 	private static final long serialVersionUID = 20211103001L;
 	static final int NUM_SPACES = 64;

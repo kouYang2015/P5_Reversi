@@ -9,6 +9,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.ReversiBoard;
 
+/**
+ * 
+ * @author Kou Yang & Dominic Hannah
+ * ICS 425 - Ralph Foy
+ * Assignment P5 - Reversi
+ * Date: 11/28/2021
+ * This class represents the Servlet used to validate server side requests.
+ *
+ */
+
 public class ReversiServlet extends HttpServlet {
 
 	/**

@@ -7,6 +7,16 @@ import javax.servlet.http.HttpSessionListener;
 import model.ReversiBoard;
 
 /**
+ * 
+ * @author Kou Yang & Dominic Hannah
+ * ICS 425 - Ralph Foy
+ * Assignment P5 - Reversi
+ * Date: 11/28/2021
+ * This class represents the Session Listener used to set a ReversiBoard as a session attribute.
+ *
+ */
+
+/**
  * Application Lifecycle Listener implementation class SessionListener
  *
  */
@@ -21,6 +31,7 @@ public class SessionListener implements HttpSessionListener {
     }
 
 	/**
+	 * Sets 3 session attributes. A ReversiBoard() as a "game", false as "helpBlack" and "helpWhite".
      * @see HttpSessionListener#sessionCreated(HttpSessionEvent)
      */
     public void sessionCreated(HttpSessionEvent se)  { 
