@@ -3,7 +3,7 @@
   <display-name>P5_KY7463_DH1317_Reversi</display-name>
   <servlet>
     <servlet-name>ReversiServlet</servlet-name>
-    <servlet-class>controller.ReversiServlet</servlet-class>
+    <servlet-class>edu.metrostate.ics425.p5.ky7463.dh1317.controller.ReversiServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
