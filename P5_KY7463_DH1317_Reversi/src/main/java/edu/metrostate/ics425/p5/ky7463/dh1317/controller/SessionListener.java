@@ -4,7 +4,7 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import edu.metrostate.ics425.p4.ky7463.dh1317.model.ReversiBoard;
+import edu.metrostate.ics425.p5.ky7463.dh1317.model.ReversiBoard;
 
 /**
  * 

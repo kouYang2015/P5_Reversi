@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.metrostate.ics425.p4.ky7463.dh1317.model.ReversiBoard;
+import edu.metrostate.ics425.p5.ky7463.dh1317.model.ReversiBoard;
 
 /**
  * 
