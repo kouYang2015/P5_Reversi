@@ -42,14 +42,14 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 								<form class="form" action="ReversiServlet" method="post">
 									<c:choose>
 										<c:when
-											test="${game.getCurrentPlayer() eq 'BLACK' && sessionScope.helpBlack eq true}">
+											test="${game.currentPlayer eq 'BLACK' && sessionScope.helpBlack eq true}">
 											<button class="formButton" type="submit" name="loc"
 												value="${stat.index}">
 												<img class="legalMove" src="images/yellowDisk.png" />
 											</button>
 										</c:when>
 										<c:when
-											test="${game.getCurrentPlayer() eq 'WHITE' && sessionScope.helpWhite eq true}">
+											test="${game.currentPlayer eq 'WHITE' && sessionScope.helpWhite eq true}">
 											<button class="formButton" type="submit" name="loc"
 												value="${stat.index}">
 												<img class="legalMove" src="images/yellowDisk.png" />
@@ -74,15 +74,15 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 
 	<div>
 		<c:choose>
-			<c:when test="${game.isOver() == true}">
+			<c:when test="${game.over == true}">
 				<c:choose>
-					<c:when test="${game.getWinner() eq 'WHITE'}">
+					<c:when test="${game.winner eq 'WHITE'}">
 						<h1 class="winner">White Wins</h1>
 					</c:when>
-					<c:when test="${game.getWinner() eq 'BLACK'}">
+					<c:when test="${game.winner eq 'BLACK'}">
 						<h1 class="winner">Black Wins</h1>
 					</c:when>
-					<c:when test="${game.getWinner() == null}">
+					<c:when test="${game.winner == null}">
 						<h1 class="winner">Its A Tie</h1>
 					</c:when>
 				</c:choose>
@@ -95,29 +95,29 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 
 		<table class="infoTable">
 			<c:choose>
-				<c:when test="${game.getCurrentPlayer() eq 'BLACK'}">
+				<c:when test="${game.currentPlayer eq 'BLACK'}">
 					<tr>
 						<td><img class="disk" src="images/blackDisk.png" />
 							<h3>Blacks Turn</h3>
-							<h4>Score:<c:out value="${game.countBlack()}" /></h4>
+							<h4>Score:<c:out value="${game.countBlack}" /></h4>
 						</td>
 						<td><img class="disk" src="images/whiteDisk.png" />
 							<h3>-</h3>
-							<h4>Score:<c:out value="${game.countWhite()}" /></h4>
+							<h4>Score:<c:out value="${game.countWhite}" /></h4>
 						</td>
 					</tr>
 				</c:when>
 
-				<c:when test="${game.getCurrentPlayer() eq 'WHITE'}">
+				<c:when test="${game.currentPlayer eq 'WHITE'}">
 					<tr>
 						<td><img class="disk" src="images/blackDisk.png" />
 							<h3>-</h3>
-							<h4>Score:<c:out value="${game.countBlack()}" /></h4>
+							<h4>Score:<c:out value="${game.countBlack}" /></h4>
 						</td>
 
 						<td><img class="disk" src="images/whiteDisk.png" />
 							<h3>Whites Turn</h3>
-							<h4>Score:<c:out value="${game.countWhite()}" /></h4>
+							<h4>Score:<c:out value="${game.countWhite}" /></h4>
 						</td>
 					</tr>
 				</c:when>

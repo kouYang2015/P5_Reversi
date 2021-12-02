@@ -409,7 +409,7 @@ public class ReversiBoard implements Serializable{
 	 * Counts the occurrences of Disk.BLACK in occupiedSpaces.
 	 * @return int blackCount: The count of how many Disk.BLACK enum exists in occupiedSpaces.
 	 */
-	public int countBlack() {
+	public int getCountBlack() {
 		int blackCount = 0;
 		for (int i = 0; i < occupiedSpaces.size(); i++) {
 			int key = (int) occupiedSpaces.keySet().toArray()[i];
@@ -424,7 +424,7 @@ public class ReversiBoard implements Serializable{
 	 * Counts the occurrences of Disk.WHITE in occupiedSpaces.
 	 * @return int whiteCount: The count of how many Disk.WHITE enum exists in occupiedSpaces.
 	 */
-	public int countWhite() {
+	public int getCountWhite() {
 		int whiteCount = 0;
 		for (int i = 0; i < occupiedSpaces.size(); i++) {
 			int key = (int) occupiedSpaces.keySet().toArray()[i];
@@ -443,10 +443,10 @@ public class ReversiBoard implements Serializable{
 	 * 			Disk.BLACK: If black has more Disk in occupiedSpaces than white.
 	 */
 	public Disk getWinner() {
-		if (isOver() && countBlack() == countWhite()) {
+		if (isOver() && getCountBlack() == getCountWhite()) {
 			return null;
 		}
-		return isOver() && (countBlack() < countWhite()) ? Disk.WHITE : Disk.BLACK;
+		return isOver() && (getCountBlack() < getCountWhite()) ? Disk.WHITE : Disk.BLACK;
 	}
 	
 	
