@@ -30,16 +30,16 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 				<c:forEach begin="0" end="63" var="space" varStatus="stat">
 					<td><c:choose>
 							<c:when
-								test="${game.occupiedSpaces[(stat.index).intValue()] eq 'BLACK'}">
+								test="${game.occupiedSpaces[stat.index] eq 'BLACK'}">
 								<img class="disk" src="images/blackDisk.png" />
 							</c:when>
 							<c:when
-								test="${game.occupiedSpaces[(stat.index).intValue()] eq 'WHITE'}">
+								test="${game.occupiedSpaces[stat.index] eq 'WHITE'}">
 								<img class="disk" src="images/whiteDisk.png" />
 							</c:when>
 							<c:when
-								test="${game.findLegalMove().contains((stat.index).intValue())}">
-								<form class="form" action="ReversiServlet" method="post">
+								test="${game.legalMoves.contains(stat.index)}">
+								<form action="<c:url value='ReversiServlet'/>" class="form" method="post">
 									<c:choose>
 										<c:when
 											test="${game.currentPlayer eq 'BLACK' && sessionScope.helpBlack eq true}">
@@ -125,28 +125,24 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 		</table>
 	</div>
 	<div class="optionsContainer">
-		<table class="infoTable">
-			<tr>
-				<td>
-					<form action="ReversiServlet" method="post">
+		<form action="<c:url value='ReversiServlet'/>" method="post">
+			<table class="infoTable">
+				<tr>
+					<td>
 						<button class="optionsButton" type="submit" name="helpBlack"
 							value="true">Toggle Black Helper</button>
-					</form>
-				</td>
-				<td>
-					<form action="ReversiServlet" method="post">
+					</td>
+					<td>
 						<button class="optionsButton" type="submit" name="quit">New
 							Game!</button>
-					</form>
-				</td>
-				<td>
-					<form action="ReversiServlet" method="post">
+					</td>
+					<td>
 						<button class="optionsButton" type="submit" name="helpWhite"
 							value="true">Toggle White Helper</button>
-					</form>
-				</td>
-			</tr>
-		</table>
+					</td>
+				</tr>
+			</table>
+		</form>
 	</div>
 
 </body>
