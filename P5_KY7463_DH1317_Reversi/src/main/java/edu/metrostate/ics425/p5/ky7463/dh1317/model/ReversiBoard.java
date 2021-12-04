@@ -3,6 +3,7 @@ package edu.metrostate.ics425.p5.ky7463.dh1317.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 /**
  * 
@@ -22,7 +23,7 @@ public class ReversiBoard implements Serializable{
 	private int turn;
 	private HashMap<Integer, Disk> occupiedSpaces;
 	private ArrayList<Integer> emptySpaces;
-	
+	private static final Logger LOGGER = Logger.getLogger("model.Game");
 	
 	enum Rows {
 		HORIZONTAL (new int[][] {{0, 1, 2, 3, 4, 5, 6, 7}, {8, 9, 10, 11, 12, 13, 14, 15}, {16, 17, 18, 19, 20, 21, 22, 23},
@@ -261,12 +262,13 @@ public class ReversiBoard implements Serializable{
 	 */
 	public synchronized void placeDisk(int loc) {
 		if (placeDisk(getCurrentPlayer(), loc)) {
+			LOGGER.info("Placed new at " + loc + " " + getCurrentPlayer());
 			captureDisks(loc);		//Capture the disks
 			if (occupiedSpaces.size() != NUM_SPACES) {		
 				turn++;
 			}
 			if (makePass()) {
-				System.out.println("Made a pass");
+				LOGGER.info(getCurrentPlayer() + " cannot make a move. Making pass back to " + getOppositePlayer());
 				turn++;
 			}
 		}
