@@ -117,9 +117,9 @@ public class ReversiBoard implements Serializable{
 	 * @return	true: if we iterate through rowArray and find a Disk enum matching the currentPlayer in rowArray.
 	 * 			false: if we iterate through rowArray and cannot find a Disk enum matching the currentPlayer in rowArray.
 	 */
-	private boolean arrayContainsCurrentPlayer(int[] rowArray){
+	private boolean arrayContainsPlayer(int[] rowArray, Disk player){
 		for (int i = 0; i < rowArray.length; i++) {
-			if (occupiedSpaces.get(rowArray[i]) == getCurrentPlayer()) {
+			if (occupiedSpaces.get(rowArray[i]) == player) {
 				return true;
 			}
 		}
@@ -186,7 +186,7 @@ public class ReversiBoard implements Serializable{
 		ArrayList<Integer> legalMoves = new ArrayList<Integer>();
 		for (Rows rows : Rows.values()) { // in the Row class, for each value in Rows
 			for (var row : rows.rows) { // var picks HORIZONTAL, VERTICAL, DIAGONAL for each array.
-				if (arrayContainsCurrentPlayer(row) && arrayContainsEmpty(row)) {
+				if (arrayContainsPlayer(row, getCurrentPlayer()) && arrayContainsEmpty(row)) {
 					legalMoves = rowHasLegalMoves(row, legalMoves);
 				}
 			}
@@ -253,7 +253,7 @@ public class ReversiBoard implements Serializable{
 	public synchronized void placeDisk(int loc) {
 		if (placeDisk(getCurrentPlayer(), loc)) {
 			captureDisks(loc);		//Capture the disks
-			if (turn < NUM_SPACES) {		
+			if (occupiedSpaces.size() != NUM_SPACES) {		
 				turn++;
 			}
 		}
@@ -456,7 +456,7 @@ public class ReversiBoard implements Serializable{
 	 * 			false: there are still legal moves left for the currentPlayer and the number of turns has not reached NUM_SPACES.
 	 */
 	public boolean isOver() {
-		return getLegalMoves().isEmpty() || turn == NUM_SPACES;
+		return getLegalMoves().isEmpty() || occupiedSpaces.size() == NUM_SPACES;
 	}
 	
 }
