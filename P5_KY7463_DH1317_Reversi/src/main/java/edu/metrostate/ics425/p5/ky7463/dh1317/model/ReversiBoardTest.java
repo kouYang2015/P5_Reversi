@@ -76,4 +76,9 @@ class ReversiBoardTest {
 		assertFalse(rb.isOver());
 	}
 	
+	@Test 
+	void testCurrentPlayer() {
+		
+	}
+	
 }
