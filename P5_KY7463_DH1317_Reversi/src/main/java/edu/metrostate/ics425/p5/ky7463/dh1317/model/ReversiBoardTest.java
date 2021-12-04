@@ -17,11 +17,12 @@ class ReversiBoardTest {
 		assertEquals(1, rb.getTurn());
 		
 		assertEquals(Disk.BLACK, rb.getCurrentPlayer());
+
 		
-		assertTrue(rb.findLegalMove().contains(19));
-		assertTrue(rb.findLegalMove().contains(26));
-		assertTrue(rb.findLegalMove().contains(37));
-		assertTrue(rb.findLegalMove().contains(44));
+		assertTrue(rb.getLegalMoves().contains(19));
+		assertTrue(rb.getLegalMoves().contains(26));
+		assertTrue(rb.getLegalMoves().contains(37));
+		assertTrue(rb.getLegalMoves().contains(44));
 		
 	}
 		
@@ -44,16 +45,18 @@ class ReversiBoardTest {
 		assertEquals(Disk.WHITE, rb.getOccupiedSpaces().get(36));
 		
 		//testing that legalMove is updating
-		assertTrue(rb.findLegalMove().contains(17));
-		assertTrue(rb.findLegalMove().contains(26));
-		assertTrue(rb.findLegalMove().contains(44));
-		assertTrue(rb.findLegalMove().contains(37));
+		assertTrue(rb.getLegalMoves().contains(17));
+		assertTrue(rb.getLegalMoves().contains(26));
+		assertTrue(rb.getLegalMoves().contains(44));
+		assertTrue(rb.getLegalMoves().contains(37));
 		
-		assertFalse(rb.findLegalMove().contains(10));
-		assertFalse(rb.findLegalMove().contains(20));
-		assertFalse(rb.findLegalMove().contains(29));
-		assertFalse(rb.findLegalMove().contains(49));
+
+		assertFalse(rb.getLegalMoves().contains(10));
+		assertFalse(rb.getLegalMoves().contains(20));
+		assertFalse(rb.getLegalMoves().contains(29));
+		assertFalse(rb.getLegalMoves().contains(49));
 		
+
 	}
 	
 	@Test

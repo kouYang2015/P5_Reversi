@@ -182,7 +182,7 @@ public class ReversiBoard implements Serializable{
 	 * Returns a list of all the locations that the currentPlayer can place a new disk on.
 	 * @return ArrayList<Integer> legalMoves: The list of all the locations a new disk can be placed on.
 	 */
-	public synchronized ArrayList<Integer> findLegalMove() {
+	public synchronized ArrayList<Integer> getLegalMoves() {
 		ArrayList<Integer> legalMoves = new ArrayList<Integer>();
 		for (Rows rows : Rows.values()) { // in the Row class, for each value in Rows
 			for (var row : rows.rows) { // var picks HORIZONTAL, VERTICAL, DIAGONAL for each array.
@@ -241,7 +241,7 @@ public class ReversiBoard implements Serializable{
 	 * 			false: if the game is over or the list return from findLegalMove() does not have loc as an element.
 	 */
 	private boolean isValidMove(int loc) {
-		return !isOver() && findLegalMove().contains(loc);
+		return !isOver() && getLegalMoves().contains(loc);
 	}
 	
 	
@@ -446,7 +446,7 @@ public class ReversiBoard implements Serializable{
 		if (isOver() && getCountBlack() == getCountWhite()) {
 			return null;
 		}
-		return isOver() && (getCountBlack() < getCountWhite()) ? Disk.WHITE : Disk.BLACK;
+		return (isOver() ? ((getCountBlack() < getCountWhite()) ? Disk.WHITE : Disk.BLACK ): null);
 	}
 	
 	
@@ -456,7 +456,7 @@ public class ReversiBoard implements Serializable{
 	 * 			false: there are still legal moves left for the currentPlayer and the number of turns has not reached NUM_SPACES.
 	 */
 	public boolean isOver() {
-		return findLegalMove().isEmpty() || turn == NUM_SPACES;
+		return getLegalMoves().isEmpty() || turn == NUM_SPACES;
 	}
 	
 }
