@@ -18,7 +18,6 @@ class ReversiBoardTest {
 		
 		assertEquals(Disk.BLACK, rb.getCurrentPlayer());
 
-		
 		assertTrue(rb.getLegalMoves().contains(19));
 		assertTrue(rb.getLegalMoves().contains(26));
 		assertTrue(rb.getLegalMoves().contains(37));
@@ -77,10 +76,19 @@ class ReversiBoardTest {
 		rb.placeDisk(26);
 		rb.placeDisk(22);
 		assertFalse(rb.isOver());
+		//testing if there is a winner
+		assertNull(rb.getWinner());
 	}
 	
 	@Test 
 	void testCurrentPlayer() {
+		assertEquals(Disk.BLACK, rb.getCurrentPlayer());
+		rb.placeDisk(44);
+		assertEquals(Disk.WHITE, rb.getCurrentPlayer());
+		rb.placeDisk(29);
+		assertEquals(Disk.BLACK, rb.getCurrentPlayer());
+		rb.placeDisk(18);
+		assertEquals(Disk.WHITE, rb.getCurrentPlayer());
 		
 	}
 	
