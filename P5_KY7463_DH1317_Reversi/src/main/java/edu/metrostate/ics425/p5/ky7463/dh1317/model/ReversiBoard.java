@@ -117,7 +117,7 @@ public class ReversiBoard implements Serializable{
 	 * @return	true: if we iterate through rowArray and find a Disk enum matching the currentPlayer in rowArray.
 	 * 			false: if we iterate through rowArray and cannot find a Disk enum matching the currentPlayer in rowArray.
 	 */
-	private boolean arrayContainsPlayer(int[] rowArray, Disk player){
+	private synchronized boolean arrayContainsPlayer(int[] rowArray, Disk player){
 		for (int i = 0; i < rowArray.length; i++) {
 			if (occupiedSpaces.get(rowArray[i]) == player) {
 				return true;
@@ -134,7 +134,7 @@ public class ReversiBoard implements Serializable{
 	 * @return	true: if we iterate through rowArray and find loc in rowArray.
 	 * 			false: if we iterate through rowArray and cannot find loc in rowArray.
 	 */
-	private boolean arrayContainsLoc(int[] rowArray, int loc) {
+	private synchronized boolean arrayContainsLoc(int[] rowArray, int loc) {
 		for (int i = 0; i < rowArray.length; i++) {
 			if (rowArray[i] == loc) {
 				return true;
@@ -150,7 +150,7 @@ public class ReversiBoard implements Serializable{
 	 * @param int loc: the location index from the ReversiBoard that we want to check for in the rowArray.
 	 * @return int locIndex: the integer whose index loc is at inside rowArray. A default value of -1 is initialized.
 	 */
-	private int getLocInArray(int[] rowArray, int loc) {
+	private synchronized int getLocInArray(int[] rowArray, int loc) {
 		int locIndex = -1;
 		for (int i = 0; i < rowArray.length; i++) {
 			if (rowArray[i] == loc) {
@@ -168,7 +168,7 @@ public class ReversiBoard implements Serializable{
 	 * @return	true: if we iterate through rowArray and find an element that is inside emptySpaces.
 	 * 			false: if we iterate through rowArray and cannot find an element that is inside emptySpaces.
 	 */
-	private boolean arrayContainsEmpty(int[] rowArray) {
+	private synchronized boolean arrayContainsEmpty(int[] rowArray) {
 		for (int i = 0; i < rowArray.length; i++) {
 			if (emptySpaces.contains(rowArray[i])) {
 				return true;
@@ -240,20 +240,33 @@ public class ReversiBoard implements Serializable{
 	 * @return	true: if the game is not over and the list return from findLegalMove() has loc as an element.
 	 * 			false: if the game is over or the list return from findLegalMove() does not have loc as an element.
 	 */
-	private boolean isValidMove(int loc) {
+	private synchronized boolean isValidMove(int loc) {
 		return !isOver() && getLegalMoves().contains(loc);
 	}
 	
+	/**
+	 * Checks if the current player has any moves to make. If not, return true to make a pass.
+	 * @return 	true : iff the current player cannot make any moves. Signals they will pass their turn.
+	 * 			false: iff the current player has moves to make.
+	 */
+	private synchronized boolean makePass() {
+		return getLegalMoves().isEmpty() ? true : false;
+	}
 	
 	/**
-	 * Places a new Disk onto the board and if successful, captures applicable Disks and increments the turn count by 1 if it is less than 
-	 * NUM_SPACES.
+	 * Places a new Disk onto the board and if successful, captures applicable Disks and increments the turn count by 1 if the
+	 * occupiedSpaces size has not reached the NUM_SPACES meaning the board is not filled. Increments the turn count by 1 again if
+	 * a pass is needed to continue the game.
 	 * @param int loc: the location index from the ReversiBoard that we want to place the currentPlayer's Disk on.
 	 */
 	public synchronized void placeDisk(int loc) {
 		if (placeDisk(getCurrentPlayer(), loc)) {
 			captureDisks(loc);		//Capture the disks
 			if (occupiedSpaces.size() != NUM_SPACES) {		
+				turn++;
+			}
+			if (makePass()) {
+				System.out.println("Made a pass");
 				turn++;
 			}
 		}
@@ -451,7 +464,8 @@ public class ReversiBoard implements Serializable{
 	
 	
 	/**
-	 * The game is over if there are no legal moves left or if the turn is equal to the NUM_SPACES meaning we have filled up the board.
+	 * The game is over if there are no legal moves left or if the turn is equal to the NUM_SPACES meaning we have filled up the 
+	 * board.
 	 * @return 	true: no legal moves left (findLegalMove() array is empty) or the number of turns has reached NUM_SPACES.
 	 * 			false: there are still legal moves left for the currentPlayer and the number of turns has not reached NUM_SPACES.
 	 */
