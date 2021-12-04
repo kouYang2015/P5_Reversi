@@ -62,7 +62,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 									</c:choose>
 								</form>
 							</c:when>
-							<c:otherwise></c:otherwise>
+							<c:otherwise>${stat.index}</c:otherwise>
 						</c:choose>
 					</td>
 						<c:choose>
