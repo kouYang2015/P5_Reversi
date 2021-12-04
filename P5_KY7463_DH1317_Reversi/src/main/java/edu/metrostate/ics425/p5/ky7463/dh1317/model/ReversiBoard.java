@@ -446,7 +446,7 @@ public class ReversiBoard implements Serializable{
 		if (isOver() && getCountBlack() == getCountWhite()) {
 			return null;
 		}
-		return isOver() && (getCountBlack() < getCountWhite()) ? Disk.WHITE : Disk.BLACK;
+		return (isOver() ? ((getCountBlack() < getCountWhite()) ? Disk.WHITE : Disk.BLACK ): null);
 	}
 	
 	
