@@ -33,16 +33,17 @@ public class ReversiBoard implements Serializable{
 		VERTICAL (new int[][] {{0,8,16,24,32,40,48,56}, {1,9,17,25,33,41,49,57}, {2,10,18,26,34,42,50,58},{3,11,19,27,35,43,51,59},
 					{4,12,20,28,36,44,52,60}, {5,13,21,29,37,45,53,61}, {6,14,22,30,38,46,54,62}, {7,15,23,31,39,47,55,63}}),
 		
-		DIAGONAL (new int[][] {{40,49,58}, {32,41,50,59}, {24,33,42,51,60}, {16,25,34,43,52,61}, {8,17,26,35,44,53,62}, 
-				{0,9,18,27,36,45,54,63}, {1,10,19,28,37,46,55}, {2,11,20,29,38,47}, {3,12,21,30,39}, {4,13,22,31}, {5,14,23}, {47,54,61},
-				{39,46,53,60}, {31,38,45,52,59}, {23,30,37,44,51,58}, {15,22,29,36,43,50,57}, {7,14,21,28,35,42,49,56},
-				{6,13,20,27,34,41,48}, {5,12,19,26,33,40}, {4,11,18,25,32}, {3,10,17,24}, {2,9,16}});
+		DIAGONAL (new int[][] {{58,49,40}, {32,41,50,59}, {24,33,42,51,60}, {16,25,34,43,52,61}, {8,17,26,35,44,53,62}, 
+				{0,9,18,27,36,45,54,63}, {1,10,19,28,37,46,55}, {2,11,20,29,38,47}, {3,12,21,30,39}, {4,13,22,31}, {5,14,23},
+				{47,54,61}, {60,53,46,39}, {31,38,45,52,59}, {23,30,37,44,51,58}, {15,22,29,36,43,50,57}, 
+				{7,14,21,28,35,42,49,56}, {6,13,20,27,34,41,48}, {5,12,19,26,33,40}, {4,11,18,25,32}, {3,10,17,24}, {2,9,16}});
 		
 		private int[][] rows;
 
 		Rows(int[][] rows) {
 			this.rows = rows;
 		}
+		
 		
 	}
 	
@@ -102,6 +103,14 @@ public class ReversiBoard implements Serializable{
 		return turn % 2 == 0 ? Disk.WHITE : Disk.BLACK;
 	}
 	
+	/**
+	 * Getter for emptySpaces property. Returns a clone of emptySpaces.
+	 * @return ArrayList<Integer> : a clone of emptySpaces.
+	 */
+	@SuppressWarnings("unchecked")
+	public ArrayList<Integer> getEmptySpaces(){
+		return (ArrayList<Integer>) emptySpaces.clone();
+	}
 	
 	/**
 	 * Getter for oppositePlayer. Returns the corresponding Disk enum based on the currentPlayer.
@@ -118,9 +127,9 @@ public class ReversiBoard implements Serializable{
 	 * @return	true: if we iterate through rowArray and find a Disk enum matching the currentPlayer in rowArray.
 	 * 			false: if we iterate through rowArray and cannot find a Disk enum matching the currentPlayer in rowArray.
 	 */
-	private synchronized boolean arrayContainsPlayer(int[] rowArray, Disk player){
+	private synchronized boolean arrayContainsPlayer(int[] rowArray){
 		for (int i = 0; i < rowArray.length; i++) {
-			if (occupiedSpaces.get(rowArray[i]) == player) {
+			if (occupiedSpaces.get(rowArray[i]) == getCurrentPlayer()) {
 				return true;
 			}
 		}
@@ -187,7 +196,7 @@ public class ReversiBoard implements Serializable{
 		ArrayList<Integer> legalMoves = new ArrayList<Integer>();
 		for (Rows rows : Rows.values()) { // in the Row class, for each value in Rows
 			for (var row : rows.rows) { // var picks HORIZONTAL, VERTICAL, DIAGONAL for each array.
-				if (arrayContainsPlayer(row, getCurrentPlayer()) && arrayContainsEmpty(row)) {
+				if (arrayContainsPlayer(row) && arrayContainsEmpty(row)) {
 					legalMoves = rowHasLegalMoves(row, legalMoves);
 				}
 			}
@@ -217,11 +226,11 @@ public class ReversiBoard implements Serializable{
 						break;
 					}
 				}
-			}
+			} //&& !legalMoves.contains(rowArray[i+1])
 			if (occupiedSpaces.get(rowArray[i]) == getOppositePlayer() && emptySpaces.contains(rowArray[i+1]) 
 					&& !legalMoves.contains(rowArray[i+1])) { //Found a nonempty index at i and next index is empty
 				//Iterate backwards to see if a currentPlayer Disk exists in occupiedSpaces given key = row[j]
-				for (int j = i-1; j > 0; j--) {
+				for (int j = i-1; j >= 0; j--) {
 					if (emptySpaces.contains(rowArray[j])) { 
 						break;
 					}
@@ -338,7 +347,7 @@ public class ReversiBoard implements Serializable{
 		}
 		if (locIndex >= 0 && willFlipBackwards(row, locIndex, currentPlayer)) {
 			//Iterate backward starting at -1 from our loc element index.
-			for (int negCur = locIndex-1; negCur > 0; negCur--) { 
+			for (int negCur = locIndex-1; negCur >= 0; negCur--) { 
 				if (occupiedSpaces.get(row[negCur]) == currentPlayer || emptySpaces.contains(row[negCur])) {
 					break;
 				}
@@ -348,7 +357,6 @@ public class ReversiBoard implements Serializable{
 			}
 		}
 	}
-	
 	
 	/**
 	 * Helper method. Checks if there contains at least one opposite player Disk between the currentPlayer's newly placed Disk and 
@@ -398,9 +406,9 @@ public class ReversiBoard implements Serializable{
 	 */
 	private synchronized boolean willFlipBackwards(int[] row, int locIndex, Disk currentPlayer) {
 		boolean hasOthers = false;
-		for (int i = locIndex; i > 0; i--) {
+		for (int i = locIndex; i >= 0; i--) {
 			if (occupiedSpaces.get(row[i]) == currentPlayer) {
-				for (int j = i-1; j > 0; j--) { //Iterate backward from current position where if statement is true try to find
+				for (int j = i-1; j >= 0; j--) { //Iterate backward from current position where if statement is true try to find
 					if (occupiedSpaces.get(row[j]) == getOppositePlayer()) {
 						hasOthers = true;	//Found an oppositePlayer disk before finding empty or currentPlayer disk.
 					}
