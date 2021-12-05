@@ -62,7 +62,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 									</c:choose>
 								</form>
 							</c:when>
-							<c:otherwise>${stat.index}</c:otherwise>
+							<c:otherwise><c:if test="${sessionScope.helpLocations eq true}">${stat.index}</c:if></c:otherwise>
 						</c:choose>
 					</td>
 						<c:choose>
@@ -130,15 +130,32 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 				<tr>
 					<td>
 						<button class="optionsButton" type="submit" name="helpBlack"
-							value="true">Toggle Black Helper</button>
+							value="true">
+								<c:choose>
+									<c:when test= "${sessionScope.helpBlack eq true}">Turn off Black Hints</c:when>
+									<c:otherwise>Turn on Black Hints</c:otherwise>
+								</c:choose>
+							</button>
 					</td>
 					<td>
-						<button class="optionsButton" type="submit" name="quit">New
-							Game!</button>
+						<button class="optionsButton" type="submit" name="quit">New Game!</button>
+					</td>
+					<td>
+						<button class="optionsButton" type="submit" name="helpLocations" value="true">
+							<c:choose>
+								<c:when test= "${sessionScope.helpLocations eq true}">Turn off Space Index</c:when>
+								<c:otherwise>Turn on Space Index</c:otherwise>
+							</c:choose>
+						</button>
 					</td>
 					<td>
 						<button class="optionsButton" type="submit" name="helpWhite"
-							value="true">Toggle White Helper</button>
+							value="true">
+								<c:choose>
+									<c:when test= "${sessionScope.helpWhite eq true}">Turn off White Hints</c:when>
+									<c:otherwise>Turn on White Hints</c:otherwise>
+								</c:choose>
+							</button>
 					</td>
 				</tr>
 			</table>

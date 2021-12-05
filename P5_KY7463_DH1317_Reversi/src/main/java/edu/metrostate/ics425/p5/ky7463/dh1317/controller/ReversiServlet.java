@@ -65,8 +65,10 @@ public class ReversiServlet extends HttpServlet {
 		String quitGame = request.getParameter("quit");
 		String helpBlackButton = request.getParameter("helpBlack");
 		String helpWhiteButton = request.getParameter("helpWhite");
+		String helpLocations = request.getParameter("helpLocations");
 		boolean helpBlackSessionValue = (boolean) request.getSession(true).getAttribute("helpBlack");
 		boolean helpWhiteSessionValue = (boolean) request.getSession(true).getAttribute("helpWhite");
+		boolean helpLocationsSessionValue = (boolean) request.getSession(true).getAttribute("helpLocations");
 		
 		//2. Validate
 		if (quitGame != null) {
@@ -82,6 +84,10 @@ public class ReversiServlet extends HttpServlet {
 		else if (Boolean.parseBoolean(helpBlackButton)) {
 			//3. Do it - Enables/Disables helper images on the jsp by setting the session attribute to opposite of itself.
 			request.getSession(true).setAttribute("helpBlack", !helpBlackSessionValue);
+		}
+		else if (Boolean.parseBoolean(helpLocations)) {
+			//3. Do it - Enables/Disables space index value on the jsp by setting the session attribute to opposite of itself.
+			request.getSession(true).setAttribute("helpLocations", !helpLocationsSessionValue);
 		}
 		else if (locRec != null && (locRec.matches("[0-5]?[0-9]") || locRec.matches("[6]?[0-3]"))) {
 			int locInt = Integer.parseInt(locRec);

@@ -38,6 +38,7 @@ public class SessionListener implements HttpSessionListener {
          se.getSession().setAttribute("game", new ReversiBoard());
          se.getSession().setAttribute("helpBlack", false);
          se.getSession().setAttribute("helpWhite", false);
+         se.getSession().setAttribute("helpLocations", false);
     }
 
 	/**
